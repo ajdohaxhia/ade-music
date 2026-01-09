@@ -1,5 +1,4 @@
 import Discography from "@/components/Discography";
-import { Section } from "lucide-react"; // Just for types/icons if needed, but not using it here.
 
 export default function Home() {
   // JSON-LD data

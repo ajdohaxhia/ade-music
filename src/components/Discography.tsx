@@ -6,7 +6,7 @@ import { Play, Pause } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function Discography() {
-    const { playTrack, currentTrack, isPlaying, togglePlay } = useAudio();
+    const { playTrack, currentTrack, isPlaying } = useAudio();
 
     return (
         <section id="discography" className="py-20 px-6 bg-black text-white">

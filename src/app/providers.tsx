@@ -1,7 +1,7 @@
 'use client';
 
 import { AudioProvider } from '@/context/AudioContext';
-// @ts-ignore
+// @ts-expect-error
 import { ReactLenis } from '@studio-freight/react-lenis';
 
 export function Providers({ children }: { children: React.ReactNode }) {
