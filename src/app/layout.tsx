@@ -50,7 +50,10 @@ export const metadata: Metadata = {
         alt: siteTitle,
       }
     ],
-  }
+  },
+  icons: {
+    icon: "/icon",
+  },
 };
 
 export default function RootLayout({
