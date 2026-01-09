@@ -13,28 +13,43 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteTitle = "Ade Music";
+const siteDescription = "Ade Music — Singer, Songwriter, Beatmaker, Mixing & Mastering Engineer.";
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://ade-music.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://ade-music.netlify.app'),
   title: {
-    default: "Ade Music",
-    template: "Ade Music | %s",
+    default: siteTitle,
+    template: `${siteTitle} | %s`,
   },
-  description: "Official website of Ade Music. Singer, Songwriter, Beatmaker, Mixing & Mastering Engineer.",
+  description: siteDescription,
   openGraph: {
-    siteName: "Ade Music",
+    siteName: siteTitle,
+    title: siteTitle,
+    description: siteDescription,
     type: "website",
     url: "/",
     images: [
       {
-        url: "/opengraph-image", // Next.js convention will handle extension
+        url: "/opengraph-image",
         width: 1200,
         height: 630,
+        alt: siteTitle,
       }
     ]
   },
   twitter: {
     card: "summary_large_image",
-    images: ["/twitter-image"],
+    title: siteTitle,
+    description: siteDescription,
+    images: [
+      {
+        url: "/twitter-image",
+        width: 1200,
+        height: 630,
+        alt: siteTitle,
+      }
+    ],
   }
 };
 
