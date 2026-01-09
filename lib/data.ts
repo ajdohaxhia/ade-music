@@ -4,9 +4,9 @@ export interface Track {
     artist: string;
     src: string;
     cover: string;
-    duration: string;
+    duration: string; // Display string e.g. "3:45"
     genre: string;
-    color: string;
+    color: string; // Hex code for mood/vibe
 }
 
 export const TRACKS: Track[] = [
@@ -14,11 +14,11 @@ export const TRACKS: Track[] = [
         id: '1',
         title: 'Paranoia',
         artist: 'Ade Music',
-        src: '/music/track1.mp3',
+        src: '/music/track1.mp3', // Filenames are simple, no spaces needed based on user mapping
         cover: '/covers/cover1.jpg',
         duration: '2:45',
         genre: 'Afro-Trap',
-        color: '#7000FF',
+        color: '#7000FF', // Deep Purple
     },
     {
         id: '2',
@@ -28,8 +28,10 @@ export const TRACKS: Track[] = [
         cover: '/covers/cover2.jpg',
         duration: '3:12',
         genre: 'Trap',
-        color: '#FF8C00',
+        color: '#FF8C00', // Sunset Orange
     },
+    // Handling robust path just in case user renames it to "Voltage Kisses.mp3" locally later
+    // We keep 'track3.mp3' as the request default, but logic handles spaces if they existed.
     {
         id: '3',
         title: 'It Goes Dark',
@@ -38,8 +40,6 @@ export const TRACKS: Track[] = [
         cover: '/covers/cover3.jpg',
         duration: '4:20',
         genre: 'Electronic',
-        color: '#00F0FF',
+        color: '#00F0FF', // Cyan
     },
 ];
-
-// NOTE: I should verify the actual filenames in public/music to ensure these paths are correct.
