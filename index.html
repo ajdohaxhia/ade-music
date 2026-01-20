@@ -187,7 +187,7 @@
         <a href="/#home" onclick="handleNavClick(event, 'home')"
           class="uppercase tracking-[0.2em] text-[11px] lg:text-xs text-white/50 hover:text-white transition-colors nav-link">Home</a>
         <a href="/#artist" onclick="handleNavClick(event, 'artist')"
-          class="uppercase tracking-[0.2em] text-[11px] lg:text-xs text-white/50 hover:text-white transition-colors nav-link">L'Artista</a>
+          class="uppercase tracking-[0.2em] text-[11px] lg:text-xs text-white/50 hover:text-white transition-colors nav-link">Biografia</a>
         <a href="/#discography" onclick="handleNavClick(event, 'discography')"
           class="uppercase tracking-[0.2em] text-[11px] lg:text-xs text-white/50 hover:text-white transition-colors nav-link">Discografia</a>
         <a href="/#services" onclick="handleNavClick(event, 'services')"
@@ -210,7 +210,7 @@
       <a href="/#home" onclick="handleNavClick(event, 'home')"
         class="text-3xl font-serif text-white hover:opacity-70 transition-opacity">Home</a>
       <a href="/#artist" onclick="handleNavClick(event, 'artist')"
-        class="text-3xl font-serif text-white hover:opacity-70 transition-opacity">L'Artista</a>
+        class="text-3xl font-serif text-white hover:opacity-70 transition-opacity">Biografia</a>
       <a href="/#discography" onclick="handleNavClick(event, 'discography')"
         class="text-3xl font-serif text-white hover:opacity-70 transition-opacity">Discografia</a>
       <a href="/#services" onclick="handleNavClick(event, 'services')"
@@ -233,18 +233,29 @@
         ADE MUSIC
       </h1>
 
-      <a href="/#discography" onclick="handleNavClick(event, 'discography')"
-        class="group relative px-8 py-4 overflow-hidden rounded-full glass-panel hover:bg-white/10 transition-colors active:scale-95 duration-200">
-        <span class="relative z-10 text-xs font-semibold tracking-[0.2em] uppercase text-white flex items-center gap-2">
-          Discografia <i data-lucide="arrow-right" class="w-4 h-4"></i>
-        </span>
-      </a>
+      <div class="flex flex-col gap-6 items-center">
+        <a href="/#discography" onclick="handleNavClick(event, 'discography')"
+          class="group relative px-8 py-4 overflow-hidden rounded-full glass-panel hover:bg-white/10 transition-colors active:scale-95 duration-200 w-64 flex justify-center">
+          <span
+            class="relative z-10 text-xs font-semibold tracking-[0.2em] uppercase text-white flex items-center gap-2">
+            Discografia <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </span>
+        </a>
+
+        <a href="/#artist" onclick="handleNavClick(event, 'artist')"
+          class="group relative px-8 py-4 overflow-hidden rounded-full glass-panel hover:bg-white/10 transition-colors active:scale-95 duration-200 w-64 flex justify-center">
+          <span
+            class="relative z-10 text-xs font-semibold tracking-[0.2em] uppercase text-white flex items-center gap-2">
+            Biografia <i data-lucide="user" class="w-4 h-4"></i>
+          </span>
+        </a>
+      </div>
     </section>
 
     <!-- ARTIST / BIO -->
     <section id="artist" class="w-full min-h-screen px-6 py-10 hidden fade-section">
       <div class="w-full max-w-3xl mx-auto pt-4 md:pt-10">
-        <h2 class="text-4xl md:text-6xl font-serif font-bold mb-12 text-center text-white">L'Artista</h2>
+        <h2 class="text-4xl md:text-6xl font-serif font-bold mb-12 text-center text-white">Biografia</h2>
 
         <!-- Editorial Glass Card -->
         <div class="glass-panel p-6 md:p-12 rounded-2xl relative overflow-hidden">
