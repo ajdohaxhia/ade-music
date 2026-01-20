@@ -285,30 +285,33 @@
       </div>
     </section>
 
-    <!-- DISCOGRAPHY (UPDATED: Using React Portal Container, but for now hardcoded to calm user) -->
-    <!-- Ideally we inject the React Discography here. 
-         But to ensure "Mobile Friendly with UI of before" we use the EXACT HTML Structure but change text 
-         and let the Global Player be the overlay. -->
+    <!-- DISCOGRAPHY -->
     <section id="discography" class="w-full min-h-screen px-6 py-10 hidden fade-section">
       <div class="w-full max-w-4xl mx-auto pt-4 md:pt-10">
-        <h2 class="text-4xl md:text-6xl font-serif font-bold mb-10 text-center text-white">Discografia</h2>
+        <h2 class="text-4xl md:text-6xl font-serif font-bold mb-8 text-center text-white">paranoia - EP Preview</h2>
+
+        <!-- EP Cover -->
+        <div class="flex justify-center mb-10">
+          <div class="w-48 h-48 md:w-64 md:h-64 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+            <img src="/covers/cover1.jpg" alt="paranoia EP Cover" class="w-full h-full object-cover">
+          </div>
+        </div>
 
         <div class="flex flex-col gap-4">
-          <!-- Track 1: Paranoia -->
+          <!-- Track 1: code switch -->
           <div
             class="glass-panel p-4 rounded-xl flex items-center gap-4 cursor-pointer hover:bg-white/5 transition-colors group"
             onclick="playTrackFromGlobal(0)">
             <div
               class="h-16 w-16 bg-white/5 rounded flex-shrink-0 flex items-center justify-center border border-white/10 overflow-hidden">
-              <!-- Placeholder or Cover if available -->
               <img src="/covers/cover1.jpg" onerror="this.style.display='none'" class="h-full w-full object-cover">
               <i data-lucide="music-2" class="text-white/30 absolute z-[-1]"></i>
             </div>
             <div class="flex-1 min-w-0">
-              <h3 class="text-xl font-serif text-white truncate">Paranoia</h3>
+              <h3 class="text-xl font-serif text-white truncate">code switch</h3>
               <div class="flex items-center gap-2 mt-1">
                 <span style="color: #7000FF; border-color: #7000FF30;"
-                  class="text-[10px] uppercase tracking-widest text-white/50 border border-white/10 px-2 py-0.5 rounded">Afro-Trap</span>
+                  class="text-[10px] uppercase tracking-widest text-white/50 border border-white/10 px-2 py-0.5 rounded">Electronic</span>
               </div>
             </div>
             <button
@@ -317,7 +320,7 @@
             </button>
           </div>
 
-          <!-- Track 2: Serotonina -->
+          <!-- Track 2: no time to run -->
           <div
             class="glass-panel p-4 rounded-xl flex items-center gap-4 cursor-pointer hover:bg-white/5 transition-colors group"
             onclick="playTrackFromGlobal(1)">
@@ -327,10 +330,10 @@
               <i data-lucide="music-2" class="text-white/30 absolute z-[-1]"></i>
             </div>
             <div class="flex-1 min-w-0">
-              <h3 class="text-xl font-serif text-white truncate">Serotonina</h3>
+              <h3 class="text-xl font-serif text-white truncate">no time to run</h3>
               <div class="flex items-center gap-2 mt-1">
                 <span style="color: #FF8C00; border-color: #FF8C0030;"
-                  class="text-[10px] uppercase tracking-widest text-white/50 border border-white/10 px-2 py-0.5 rounded">Trap</span>
+                  class="text-[10px] uppercase tracking-widest text-white/50 border border-white/10 px-2 py-0.5 rounded">Electronic</span>
               </div>
             </div>
             <button
@@ -339,7 +342,7 @@
             </button>
           </div>
 
-          <!-- Track 3: It Goes Dark -->
+          <!-- Track 3: we're fucked -->
           <div
             class="glass-panel p-4 rounded-xl flex items-center gap-4 cursor-pointer hover:bg-white/5 transition-colors group"
             onclick="playTrackFromGlobal(2)">
@@ -349,9 +352,31 @@
               <i data-lucide="music-2" class="text-white/30 absolute z-[-1]"></i>
             </div>
             <div class="flex-1 min-w-0">
-              <h3 class="text-xl font-serif text-white truncate">It Goes Dark</h3>
+              <h3 class="text-xl font-serif text-white truncate">we're fucked</h3>
               <div class="flex items-center gap-2 mt-1">
                 <span style="color: #00F0FF; border-color: #00F0FF30;"
+                  class="text-[10px] uppercase tracking-widest text-white/50 border border-white/10 px-2 py-0.5 rounded">Electronic</span>
+              </div>
+            </div>
+            <button
+              class="h-12 w-12 rounded-full border border-white/20 flex items-center justify-center text-white active:scale-90 transition-transform">
+              <i data-lucide="play" class="w-5 h-5 fill-current ml-0.5"></i>
+            </button>
+          </div>
+
+          <!-- Track 4: it goes dark -->
+          <div
+            class="glass-panel p-4 rounded-xl flex items-center gap-4 cursor-pointer hover:bg-white/5 transition-colors group"
+            onclick="playTrackFromGlobal(3)">
+            <div
+              class="h-16 w-16 bg-white/5 rounded flex-shrink-0 flex items-center justify-center border border-white/10 overflow-hidden">
+              <img src="/covers/cover4.jpg" onerror="this.style.display='none'" class="h-full w-full object-cover">
+              <i data-lucide="music-2" class="text-white/30 absolute z-[-1]"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-xl font-serif text-white truncate">it goes dark</h3>
+              <div class="flex items-center gap-2 mt-1">
+                <span style="color: #FF00FF; border-color: #FF00FF30;"
                   class="text-[10px] uppercase tracking-widest text-white/50 border border-white/10 px-2 py-0.5 rounded">Electronic</span>
               </div>
             </div>

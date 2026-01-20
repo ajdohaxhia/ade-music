@@ -11,9 +11,20 @@ const Discography = () => {
 
     return (
         <section className="w-full py-20 px-4 md:px-8">
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-12 tracking-tight text-center drop-shadow-2xl">
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-8 tracking-tight text-center drop-shadow-2xl">
                 paranoia - EP Preview
             </h2>
+
+            {/* EP Cover */}
+            <div className="flex justify-center mb-12">
+                <div className="w-48 h-48 md:w-64 md:h-64 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+                    <img
+                        src="/covers/cover1.jpg"
+                        alt="paranoia EP Cover"
+                        className="w-full h-full object-cover"
+                    />
+                </div>
+            </div>
 
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {TRACKS.map((track, index) => {
