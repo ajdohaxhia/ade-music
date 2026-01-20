@@ -12,10 +12,10 @@ const Discography = () => {
     return (
         <section className="w-full py-20 px-4 md:px-8">
             <h2 className="text-3xl md:text-5xl font-bold text-white mb-12 tracking-tight text-center drop-shadow-2xl">
-                Discography
+                paranoia - EP Preview
             </h2>
 
-            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {TRACKS.map((track, index) => {
                     const isActive = currentTrack?.id === track.id;
                     const isPlayingCurrent = isActive && isPlaying;
@@ -28,8 +28,8 @@ const Discography = () => {
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 }}
                             className={`group relative overflow-hidden rounded-3xl bg-neutral-900/40 backdrop-blur-xl border transition-all duration-300 ${isActive
-                                    ? 'border-cyan-500/50 shadow-[0_0_30px_rgba(6,182,212,0.15)] ring-1 ring-cyan-500/20'
-                                    : 'border-white/5 hover:border-white/10 hover:bg-neutral-900/60'
+                                ? 'border-cyan-500/50 shadow-[0_0_30px_rgba(6,182,212,0.15)] ring-1 ring-cyan-500/20'
+                                : 'border-white/5 hover:border-white/10 hover:bg-neutral-900/60'
                                 }`}
                         >
                             {/* Colorful Glow Background based on Track Vibe */}
