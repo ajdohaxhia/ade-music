@@ -11,6 +11,8 @@ const GlobalPlayer = () => {
     const progressBarRef = React.useRef<HTMLDivElement>(null);
     const fullScreenProgressBarRef = React.useRef<HTMLDivElement>(null);
 
+    const [isDragging, setIsDragging] = useState(false);
+
     // Format time helper (mm:ss)
     const formatTime = (time: number) => {
         if (!time || isNaN(time)) return "0:00";
@@ -19,21 +21,41 @@ const GlobalPlayer = () => {
         return `${minutes}:${seconds.toString().padStart(2, '0')}`;
     };
 
-    const handleSeek = (e: React.MouseEvent<HTMLDivElement>, ref: React.RefObject<HTMLDivElement>) => {
-        e.stopPropagation();
-        if (!ref.current) return;
-        const rect = ref.current.getBoundingClientRect();
-        const clickX = e.clientX - rect.left;
-        const width = rect.width;
-        const percentage = Math.max(0, Math.min(1, clickX / width));
+    const handleSeek = (percentage: number) => {
         const newTime = percentage * duration;
         seek(newTime);
     };
 
+    const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>, ref: React.RefObject<HTMLDivElement>) => {
+        e.stopPropagation(); // Prevent drag of parent
+        setIsDragging(true);
+        if (!ref.current) return;
+        const rect = ref.current.getBoundingClientRect();
+        const clientX = e.clientX;
+        const width = rect.width;
+        const percentage = Math.max(0, Math.min(1, (clientX - rect.left) / width));
+        handleSeek(percentage);
+
+        // Add global listeners for drag
+        const handlePointerMove = (moveEvent: PointerEvent) => {
+            const newPercentage = Math.max(0, Math.min(1, (moveEvent.clientX - rect.left) / width));
+            handleSeek(newPercentage);
+        };
+
+        const handlePointerUp = () => {
+            setIsDragging(false);
+            window.removeEventListener('pointermove', handlePointerMove);
+            window.removeEventListener('pointerup', handlePointerUp);
+        };
+
+        window.addEventListener('pointermove', handlePointerMove);
+        window.addEventListener('pointerup', handlePointerUp);
+    };
+
     // Auto-expand if needed, but let's keep it manual
-    // Close on drag down
+    // Close on drag down (disable if scrubbing)
     const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-        if (info.offset.y > 150) {
+        if (!isDragging && info.offset.y > 150) {
             setIsFullScreen(false);
         }
     };
@@ -114,7 +136,7 @@ const GlobalPlayer = () => {
                             <div
                                 className="relative h-2 w-full bg-white/10 rounded-full cursor-pointer touch-none"
                                 ref={fullScreenProgressBarRef}
-                                onClick={(e) => handleSeek(e, fullScreenProgressBarRef)}
+                                onPointerDown={(e) => handlePointerDown(e, fullScreenProgressBarRef)}
                             >
                                 <div
                                     className="absolute top-0 left-0 h-full bg-white rounded-full relative"
@@ -190,7 +212,7 @@ const GlobalPlayer = () => {
                         {/* Progress Line Top */}
                         <div
                             ref={progressBarRef}
-                            onClick={(e) => handleSeek(e, progressBarRef)}
+                            onPointerDown={(e) => handlePointerDown(e, progressBarRef)}
                             className="absolute bottom-0 left-0 right-0 h-[2px] w-full cursor-pointer z-20 group bg-transparent"
                         >
                             <div className="h-full bg-white/10 w-full" />
