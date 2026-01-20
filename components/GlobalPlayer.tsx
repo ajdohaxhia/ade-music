@@ -254,12 +254,10 @@ const GlobalPlayer = () => {
 
                         {/* Cover - Rotating */}
                         <div className="relative h-12 w-12 shrink-0">
-                            <motion.img
+                            <img
                                 src={currentTrack.cover}
                                 alt="cover"
                                 className="h-full w-full rounded-md object-cover shadow-lg"
-                                animate={{ rotate: isPlaying ? 360 : 0 }}
-                                transition={{ repeat: Infinity, duration: 8, ease: "linear", repeatType: "loop" }}
                             />
                         </div>
 
