@@ -6,10 +6,11 @@ import { useAudio } from '@/context/AudioContext';
 import { Play, Pause, SkipForward, SkipBack, ChevronDown, X, Volume2, Music, ListMusic } from 'lucide-react';
 
 const GlobalPlayer = () => {
-    const { currentTrack, isPlaying, togglePlay, nextTrack, prevTrack, progress, isVisible, duration, seek } = useAudio();
+    const { currentTrack, isPlaying, togglePlay, nextTrack, prevTrack, progress, isVisible, duration, seek, volume, setVolume } = useAudio();
     const [isFullScreen, setIsFullScreen] = useState(false);
     const progressBarRef = React.useRef<HTMLDivElement>(null);
     const fullScreenProgressBarRef = React.useRef<HTMLDivElement>(null);
+    const volumeBarRef = React.useRef<HTMLDivElement>(null);
 
     const [isDragging, setIsDragging] = useState(false);
 
@@ -26,7 +27,12 @@ const GlobalPlayer = () => {
         seek(newTime);
     };
 
-    const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>, ref: React.RefObject<HTMLDivElement>) => {
+    const handleVolumeChange = (percentage: number) => {
+        const newVolume = Math.max(0, Math.min(1, percentage));
+        setVolume(newVolume);
+    };
+
+    const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>, ref: React.RefObject<HTMLDivElement>, isVolume = false) => {
         e.stopPropagation(); // Prevent drag of parent
         setIsDragging(true);
         if (!ref.current) return;
@@ -34,12 +40,21 @@ const GlobalPlayer = () => {
         const clientX = e.clientX;
         const width = rect.width;
         const percentage = Math.max(0, Math.min(1, (clientX - rect.left) / width));
-        handleSeek(percentage);
+
+        if (isVolume) {
+            handleVolumeChange(percentage);
+        } else {
+            handleSeek(percentage);
+        }
 
         // Add global listeners for drag
         const handlePointerMove = (moveEvent: PointerEvent) => {
             const newPercentage = Math.max(0, Math.min(1, (moveEvent.clientX - rect.left) / width));
-            handleSeek(newPercentage);
+            if (isVolume) {
+                handleVolumeChange(newPercentage);
+            } else {
+                handleSeek(newPercentage);
+            }
         };
 
         const handlePointerUp = () => {
@@ -76,10 +91,11 @@ const GlobalPlayer = () => {
                     dragConstraints={{ top: 0, bottom: 0 }}
                     dragElastic={{ top: 0, bottom: 0.2 }}
                     onDragEnd={handleDragEnd}
-                    className="fixed inset-0 z-[60] flex flex-col bg-[#050505] text-white overflow-hidden"
+                    className="fixed top-0 left-0 w-full h-[100dvh] z-[60] flex flex-col bg-[#050505] text-white overflow-hidden touch-none"
+                    style={{ maxHeight: '-webkit-fill-available' }}
                 >
                     {/* Dynamic Ambient Background */}
-                    <div className="absolute inset-0 z-0">
+                    <div className="absolute inset-0 z-0 pointer-events-none">
                         <div
                             className="absolute inset-0 opacity-40 blur-[100px] scale-150 transition-colors duration-1000 ease-in-out"
                             style={{ background: `radial-gradient(circle at center, ${currentTrack.color}, transparent 70%)` }}
@@ -88,7 +104,7 @@ const GlobalPlayer = () => {
                     </div>
 
                     {/* Header */}
-                    <div className="relative z-10 flex items-center justify-center pt-12 pb-6 px-6">
+                    <div className="relative z-10 flex items-center justify-center pt-8 pb-6 px-6 h-[80px] shrink-0">
                         <div className="w-10 h-1 bg-white/20 rounded-full absolute top-4 left-1/2 -translate-x-1/2" /> {/* Grab Handle */}
                         <button
                             onClick={() => setIsFullScreen(false)}
@@ -100,11 +116,11 @@ const GlobalPlayer = () => {
                     </div>
 
                     {/* Main Content */}
-                    <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-8 pb-12 w-full max-w-md mx-auto">
+                    <div className="relative z-10 flex-1 flex flex-col items-center justify-evenly px-8 pb-8 w-full max-w-md mx-auto">
 
                         {/* Artwork */}
                         <motion.div
-                            className="w-full aspect-square mb-12 relative shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-2xl overflow-hidden"
+                            className="w-full aspect-square relative shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-2xl overflow-hidden max-h-[45vh]"
                             initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             transition={{ delay: 0.1 }}
@@ -117,7 +133,7 @@ const GlobalPlayer = () => {
                         </motion.div>
 
                         {/* Track Info */}
-                        <div className="w-full flex items-end justify-between mb-8">
+                        <div className="w-full h-[80px] flex items-center justify-between">
                             <div className="flex-1 min-w-0 mr-4">
                                 <h2 className="text-2xl sm:text-3xl font-bold text-white mb-1 truncate leading-tight">
                                     {currentTrack.title}
@@ -126,13 +142,10 @@ const GlobalPlayer = () => {
                                     {currentTrack.artist}
                                 </p>
                             </div>
-                            {/* <button className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white/80">
-                                <ListMusic size={20} />
-                            </button> */}
                         </div>
 
                         {/* Scrubber */}
-                        <div className="w-full mb-10 group">
+                        <div className="w-full h-[40px] flex flex-col justify-center group">
                             <div
                                 className="relative h-2 w-full bg-white/10 rounded-full cursor-pointer touch-none"
                                 ref={fullScreenProgressBarRef}
@@ -152,7 +165,7 @@ const GlobalPlayer = () => {
                         </div>
 
                         {/* Controls */}
-                        <div className="w-full flex items-center justify-between px-4 sm:px-8">
+                        <div className="w-full h-[100px] flex items-center justify-between px-4 sm:px-8">
                             <button
                                 onClick={prevTrack}
                                 className="text-white/70 hover:text-white transition-colors active:scale-95"
@@ -179,11 +192,20 @@ const GlobalPlayer = () => {
                             </button>
                         </div>
 
-                        {/* Volume / Extra (Visual only for now) */}
-                        <div className="w-full mt-10 flex items-center gap-4 px-4 opacity-50">
+                        {/* Interactive Volume */}
+                        <div className="w-full h-[40px] flex items-center gap-4 px-4 opacity-80">
                             <Volume2 size={16} />
-                            <div className="flex-1 h-1 bg-white/20 rounded-full">
-                                <div className="w-3/4 h-full bg-white rounded-full" />
+                            <div
+                                className="flex-1 h-8 flex items-center cursor-pointer touch-none"
+                                ref={volumeBarRef}
+                                onPointerDown={(e) => handlePointerDown(e, volumeBarRef, true)}
+                            >
+                                <div className="w-full h-1 bg-white/20 rounded-full relative overflow-hidden">
+                                    <div
+                                        className="h-full bg-white rounded-full absolute left-0 top-0"
+                                        style={{ width: `${volume * 100}%` }}
+                                    />
+                                </div>
                             </div>
                         </div>
 

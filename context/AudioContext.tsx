@@ -10,11 +10,13 @@ interface AudioContextType {
     currentTrack: Track;
     progress: number;
     duration: number;
+    volume: number;
     togglePlay: () => void;
     playTrack: (index: number) => void;
     nextTrack: () => void;
     prevTrack: () => void;
     seek: (time: number) => void;
+    setVolume: (volume: number) => void;
 }
 
 const AudioContext = createContext<AudioContextType | undefined>(undefined);
@@ -24,6 +26,7 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
     const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
     const [progress, setProgress] = useState(0);
     const [duration, setDuration] = useState(0);
+    const [volume, setVolume] = useState(1);
     const [hasPlayedOnce, setHasPlayedOnce] = useState(false);
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -163,11 +166,16 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
                 currentTrack: TRACKS[currentTrackIndex],
                 progress,
                 duration,
+                volume,
                 togglePlay,
                 playTrack,
                 nextTrack,
                 prevTrack,
                 seek,
+                setVolume: (vol) => {
+                    setVolume(vol);
+                    if (audioRef.current) audioRef.current.volume = vol;
+                },
             }}
         >
             {children}
