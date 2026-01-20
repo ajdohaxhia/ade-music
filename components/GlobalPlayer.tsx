@@ -1,128 +1,248 @@
 'use client';
 
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence, useDragControls, PanInfo } from 'framer-motion';
 import { useAudio } from '@/context/AudioContext';
-import { Play, Pause, SkipForward, SkipBack } from 'lucide-react';
+import { Play, Pause, SkipForward, SkipBack, ChevronDown, X, Volume2, Music, ListMusic } from 'lucide-react';
 
 const GlobalPlayer = () => {
     const { currentTrack, isPlaying, togglePlay, nextTrack, prevTrack, progress, isVisible, duration, seek } = useAudio();
+    const [isFullScreen, setIsFullScreen] = useState(false);
     const progressBarRef = React.useRef<HTMLDivElement>(null);
+    const fullScreenProgressBarRef = React.useRef<HTMLDivElement>(null);
 
-    const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (!progressBarRef.current) return;
-        const rect = progressBarRef.current.getBoundingClientRect();
+    // Format time helper (mm:ss)
+    const formatTime = (time: number) => {
+        if (!time || isNaN(time)) return "0:00";
+        const minutes = Math.floor(time / 60);
+        const seconds = Math.floor(time % 60);
+        return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    };
+
+    const handleSeek = (e: React.MouseEvent<HTMLDivElement>, ref: React.RefObject<HTMLDivElement>) => {
+        e.stopPropagation();
+        if (!ref.current) return;
+        const rect = ref.current.getBoundingClientRect();
         const clickX = e.clientX - rect.left;
         const width = rect.width;
-        const percentage = clickX / width;
+        const percentage = Math.max(0, Math.min(1, clickX / width));
         const newTime = percentage * duration;
         seek(newTime);
     };
 
+    // Auto-expand if needed, but let's keep it manual
+    // Close on drag down
+    const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+        if (info.offset.y > 150) {
+            setIsFullScreen(false);
+        }
+    };
+
+    if (!isVisible) return null;
+
     return (
-        <AnimatePresence>
-            {isVisible && (
+        <AnimatePresence mode="wait">
+            {isFullScreen ? (
+                /* ================= FULL SCREEN PLAYER ================= */
                 <motion.div
-                    initial={{ y: 200, x: "-50%", opacity: 0 }}
-                    animate={{ y: 0, x: "-50%", opacity: 1 }}
-                    exit={{ y: 200, x: "-50%", opacity: 0 }}
-                    transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-                    className="fixed bottom-6 left-1/2 z-50 w-auto max-w-[95vw]"
+                    key="fullscreen-player"
+                    initial={{ y: "100%" }}
+                    animate={{ y: 0 }}
+                    exit={{ y: "100%" }}
+                    transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                    drag="y"
+                    dragConstraints={{ top: 0, bottom: 0 }}
+                    dragElastic={{ top: 0, bottom: 0.2 }}
+                    onDragEnd={handleDragEnd}
+                    className="fixed inset-0 z-[60] flex flex-col bg-[#050505] text-white overflow-hidden"
                 >
-                    {/* Glow behind (Dynamic Color) */}
-                    <div
-                        className="absolute inset-0 blur-3xl rounded-full -z-10 transition-colors duration-700"
-                        style={{ backgroundColor: `${currentTrack.color}30` }} // 30 = ~20% opacity
-                    />
-
-                    {/* The Liquid Glass Capsule */}
-                    <div className="relative flex items-center gap-4 sm:gap-6 px-4 sm:px-6 py-3 rounded-full bg-black/40 backdrop-blur-2xl border border-white/10 shadow-2xl overflow-hidden w-full min-w-[320px] sm:min-w-[420px]">
-
-                        {/* Progress Bar (Top Line - Dynamic Color) - Interactive Area */}
+                    {/* Dynamic Ambient Background */}
+                    <div className="absolute inset-0 z-0">
                         <div
-                            ref={progressBarRef}
-                            onClick={handleSeek}
-                            className="absolute top-0 left-0 right-0 h-[6px] -mt-[2px] w-full cursor-pointer group z-20 group"
+                            className="absolute inset-0 opacity-40 blur-[100px] scale-150 transition-colors duration-1000 ease-in-out"
+                            style={{ background: `radial-gradient(circle at center, ${currentTrack.color}, transparent 70%)` }}
+                        />
+                        <div className="absolute inset-0 bg-black/40 backdrop-blur-3xl" />
+                    </div>
+
+                    {/* Header */}
+                    <div className="relative z-10 flex items-center justify-center pt-12 pb-6 px-6">
+                        <div className="w-10 h-1 bg-white/20 rounded-full absolute top-4 left-1/2 -translate-x-1/2" /> {/* Grab Handle */}
+                        <button
+                            onClick={() => setIsFullScreen(false)}
+                            className="absolute left-6 text-white/50 hover:text-white transition-colors"
                         >
-                            {/* Visual Bar background */}
-                            <div className="absolute top-[2px] left-0 right-0 h-[2px] bg-white/5 w-full pointer-events-none" />
+                            <ChevronDown size={32} />
+                        </button>
+                        <span className="text-xs font-semibold tracking-widest uppercase text-white/50">In Riproduzione</span>
+                    </div>
 
-                            {/* Active Bar */}
-                            <motion.div
-                                className="h-[2px] mt-[2px] shadow-[0_0_10px_currentColor] relative"
-                                style={{
-                                    width: `${progress}%`,
-                                    backgroundColor: currentTrack.color,
-                                    color: currentTrack.color
-                                }}
-                                layoutId="progress-bar"
-                            >
-                                {/* Scrubber Head (Visible on Hover) */}
-                                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full opacity-0 group-hover:opacity-100 shadow-lg transition-opacity" />
-                            </motion.div>
-                        </div>
+                    {/* Main Content */}
+                    <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-8 pb-12 w-full max-w-md mx-auto">
 
-                        {/* Album Art (Spinning) */}
-                        <div className="relative h-10 w-10 sm:h-12 sm:w-12 shrink-0">
-                            <motion.img
+                        {/* Artwork */}
+                        <motion.div
+                            className="w-full aspect-square mb-12 relative shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-2xl overflow-hidden"
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ delay: 0.1 }}
+                        >
+                            <img
                                 src={currentTrack.cover}
-                                alt="cover"
-                                className="h-full w-full rounded-full object-cover border border-white/20"
-                                animate={{ rotate: isPlaying ? 360 : 0 }}
-                                transition={{ repeat: Infinity, duration: 8, ease: "linear", repeatType: "loop" }}
-                                style={{ rotate: 0 }} // default
+                                alt={currentTrack.title}
+                                className="w-full h-full object-cover"
                             />
-                            {/* Center hole for vinyl look */}
-                            <div className="absolute inset-0 m-auto h-2 w-2 bg-black rounded-full border border-neutral-700" />
-                        </div>
+                        </motion.div>
 
                         {/* Track Info */}
-                        <div className="flex-1 min-w-0 pr-2 flex flex-col justify-center">
-                            <div className="flex items-center gap-2">
-                                <h4 className="text-white text-xs sm:text-sm font-bold truncate drop-shadow-md max-w-[120px] sm:max-w-none">
+                        <div className="w-full flex items-end justify-between mb-8">
+                            <div className="flex-1 min-w-0 mr-4">
+                                <h2 className="text-2xl sm:text-3xl font-bold text-white mb-1 truncate leading-tight">
                                     {currentTrack.title}
-                                </h4>
-                                {/* Genre Pill */}
-                                <span
-                                    className="hidden sm:inline-block text-[10px] px-1.5 py-0.5 rounded-full bg-white/10 text-white/80 border border-white/5 whitespace-nowrap"
-                                >
-                                    {currentTrack.genre}
-                                </span>
+                                </h2>
+                                <p className="text-lg text-white/60 truncate font-medium">
+                                    {currentTrack.artist}
+                                </p>
                             </div>
+                            {/* <button className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white/80">
+                                <ListMusic size={20} />
+                            </button> */}
+                        </div>
 
-                            <p className="text-white/50 text-[10px] sm:text-xs truncate font-medium tracking-wide">
-                                {currentTrack.artist}
-                            </p>
+                        {/* Scrubber */}
+                        <div className="w-full mb-10 group">
+                            <div
+                                className="relative h-2 w-full bg-white/10 rounded-full cursor-pointer touch-none"
+                                ref={fullScreenProgressBarRef}
+                                onClick={(e) => handleSeek(e, fullScreenProgressBarRef)}
+                            >
+                                <div
+                                    className="absolute top-0 left-0 h-full bg-white rounded-full relative"
+                                    style={{ width: `${progress}%`, backgroundColor: currentTrack.color }}
+                                >
+                                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow transition-transform group-hover:scale-150" />
+                                </div>
+                            </div>
+                            <div className="flex justify-between mt-2 text-xs font-medium text-white/40">
+                                <span>{formatTime((progress / 100) * duration)}</span>
+                                <span>{formatTime(duration)}</span>
+                            </div>
                         </div>
 
                         {/* Controls */}
-                        <div className="flex items-center gap-3 sm:gap-4 text-white">
+                        <div className="w-full flex items-center justify-between px-4 sm:px-8">
                             <button
                                 onClick={prevTrack}
-                                className="hover:text-white transition-colors active:scale-95 opacity-80 hover:opacity-100"
+                                className="text-white/70 hover:text-white transition-colors active:scale-95"
                             >
-                                <SkipBack size={18} sm:size={20} fill="currentColor" />
+                                <SkipBack size={36} fill="currentColor" />
                             </button>
 
                             <button
                                 onClick={togglePlay}
-                                className="h-8 w-8 sm:h-10 sm:w-10 flex items-center justify-center rounded-full bg-white/10 border border-white/20 hover:bg-white/20 transition-all active:scale-90 backdrop-blur-md group"
+                                className="w-20 h-20 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-xl"
                             >
                                 {isPlaying ? (
-                                    <Pause size={16} sm:size={18} fill="currentColor" className="group-hover:text-white" />
+                                    <Pause size={32} fill="currentColor" />
                                 ) : (
-                                    <Play size={16} sm:size={18} fill="currentColor" className="ml-0.5 group-hover:text-white" />
+                                    <Play size={32} fill="currentColor" className="ml-1" />
                                 )}
                             </button>
 
                             <button
                                 onClick={nextTrack}
-                                className="hover:text-white transition-colors active:scale-95 opacity-80 hover:opacity-100"
+                                className="text-white/70 hover:text-white transition-colors active:scale-95"
                             >
-                                <SkipForward size={18} sm:size={20} fill="currentColor" />
+                                <SkipForward size={36} fill="currentColor" />
                             </button>
                         </div>
 
+                        {/* Volume / Extra (Visual only for now) */}
+                        <div className="w-full mt-10 flex items-center gap-4 px-4 opacity-50">
+                            <Volume2 size={16} />
+                            <div className="flex-1 h-1 bg-white/20 rounded-full">
+                                <div className="w-3/4 h-full bg-white rounded-full" />
+                            </div>
+                        </div>
+
+                    </div>
+                </motion.div>
+            ) : (
+                /* ================= MINI PLAYER ================= */
+                <motion.div
+                    key="mini-player"
+                    initial={{ y: 200, x: "-50%", opacity: 0 }}
+                    animate={{ y: 0, x: "-50%", opacity: 1 }}
+                    exit={{ y: 200, x: "-50%", opacity: 0 }}
+                    transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+                    className="fixed bottom-6 left-1/2 z-50 w-auto max-w-[95vw]"
+                    onClick={() => setIsFullScreen(true)} // Open Fullscreen
+                >
+                    {/* Glow behind */}
+                    <div
+                        className="absolute inset-0 blur-3xl rounded-full -z-10 transition-colors duration-700"
+                        style={{ backgroundColor: `${currentTrack.color}40` }}
+                    />
+
+                    {/* Capsule */}
+                    <div className="relative flex items-center gap-4 px-4 py-3 rounded-2xl bg-[#111]/80 backdrop-blur-2xl border border-white/10 shadow-2xl overflow-hidden w-[340px] cursor-pointer hover:bg-[#111]/90 transition-colors">
+
+                        {/* Progress Line Top */}
+                        <div
+                            ref={progressBarRef}
+                            onClick={(e) => handleSeek(e, progressBarRef)}
+                            className="absolute bottom-0 left-0 right-0 h-[2px] w-full cursor-pointer z-20 group bg-transparent"
+                        >
+                            <div className="h-full bg-white/10 w-full" />
+                            <div
+                                className="absolute top-0 left-0 h-full shadow-[0_0_10px_currentColor]"
+                                style={{
+                                    width: `${progress}%`,
+                                    backgroundColor: currentTrack.color,
+                                }}
+                            />
+                        </div>
+
+                        {/* Cover - Rotating */}
+                        <div className="relative h-12 w-12 shrink-0">
+                            <motion.img
+                                src={currentTrack.cover}
+                                alt="cover"
+                                className="h-full w-full rounded-md object-cover shadow-lg"
+                                animate={{ rotate: isPlaying ? 360 : 0 }}
+                                transition={{ repeat: Infinity, duration: 8, ease: "linear", repeatType: "loop" }}
+                            />
+                        </div>
+
+                        {/* Info */}
+                        <div className="flex-1 min-w-0 flex flex-col justify-center">
+                            <h4 className="text-white text-sm font-semibold truncate leading-tight">
+                                {currentTrack.title}
+                            </h4>
+                            <p className="text-white/50 text-xs truncate">
+                                {currentTrack.artist}
+                            </p>
+                        </div>
+
+                        {/* Controls (Mini) */}
+                        <div className="flex items-center gap-3 text-white" onClick={(e) => e.stopPropagation()}>
+                            <button
+                                onClick={togglePlay}
+                                className="h-10 w-10 flex items-center justify-center rounded-full bg-white text-black hover:scale-105 transition-all"
+                            >
+                                {isPlaying ? (
+                                    <Pause size={20} fill="currentColor" />
+                                ) : (
+                                    <Play size={20} fill="currentColor" className="ml-1" />
+                                )}
+                            </button>
+                            <button
+                                onClick={nextTrack}
+                                className="text-white/60 hover:text-white transition-colors"
+                            >
+                                <SkipForward size={24} fill="currentColor" />
+                            </button>
+                        </div>
                     </div>
                 </motion.div>
             )}
