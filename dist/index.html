@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <!-- SEO & Metadata -->
+  <title>ADE MUSIC</title>
+  <meta name="description"
+    content="Ade è un artista e produttore indipendente che trasforma emozioni crude in suono contemporaneo. Singer, Songwriter e Sound Engineer.">
+  <meta name="keywords"
+    content="Ade Music, Mixing Engineer Italia, Beatmaker, Mastering Online, Produzione Musicale, Sound Design, Artist Bio">
+  <meta name="author" content="Ade Music">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="ADE MUSIC">
+  <meta property="og:description" content="Ade Music — Singer, Songwriter, Beatmaker, Mixing & Mastering Engineer.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ade-music.netlify.app">
+  <meta property="og:image" content="https://ade-music.netlify.app/og-image-v3.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="Ade Music">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ADE MUSIC">
+  <meta name="twitter:description" content="Ade Music — Singer, Songwriter, Beatmaker, Mixing & Mastering Engineer.">
+  <meta name="twitter:image" content="https://ade-music.netlify.app/og-image-v3.png">
+
+  <!-- Favicon: 444 Logo -->
+  <link rel="icon" href="/favicon-v2.png" type="image/png">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+    rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+          },
+          colors: {
+            'void': '#050505',
+            'glass-border': 'rgba(255, 255, 255, 0.1)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #050505;
+      color: #ffffff;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Hypnotic Ambient Orbs (Slow & Smooth) */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.4;
+      will-change: transform;
+    }
+
+    .orb-1 {
+      top: -10%;
+      left: 20%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, #4c1d95 0%, transparent 70%);
+      /* Violet */
+      animation: orbital 25s infinite alternate ease-in-out;
+    }
+
+    .orb-2 {
+      bottom: -10%;
+      right: 10%;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, #1e3a8a 0%, transparent 70%);
+      /* Deep Blue */
+      animation: orbital 30s infinite alternate-reverse ease-in-out;
+    }
+
+    @media (max-width: 768px) {
+      .orb {
+        filter: blur(60px);
+        opacity: 0.25;
+      }
+
+      .orb-1 {
+        width: 300px;
+        height: 300px;
+      }
+
+      .orb-2 {
+        width: 350px;
+        height: 350px;
+      }
+    }
+
+    @keyframes orbital {
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      100% {
+        transform: translate(40px, 30px) scale(1.1);
+      }
+    }
+
+    /* Glass Utilities */
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Mobile Menu */
+    #mobile-menu {
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    #mobile-menu.hidden-menu {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    #mobile-menu.visible-menu {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    /* Typography Helper for Bio */
+    .editorial-text {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      line-height: 1.8;
+      /* Relaxed leading */
+      color: rgba(255, 255, 255, 0.85);
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/index-DTDmt8tr.js"></script>
+</head>
+
+<body class="selection:bg-white/20 selection:text-white">
+
+  <!-- Ambient Background -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full z-50 glass-panel border-l-0 border-r-0 border-t-0 bg-void/40 h-20 flex items-center">
+    <div class="w-full max-w-7xl mx-auto px-6 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="/" onclick="handleNavClick(event, 'home')"
+        class="text-2xl font-serif font-bold tracking-wider text-white z-50 relative hover:opacity-80 transition-opacity">ADE</a>
+
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex gap-8 lg:gap-10">
+        <a href="/#home" onclick="handleNavClick(event, 'home')"
+          class="uppercase tracking-[0.2em] text-[11px] lg:text-xs text-white/50 hover:text-white transition-colors nav-link">Home</a>
+        <a href="/#artist" onclick="handleNavClick(event, 'artist')"
+          class="uppercase tracking-[0.2em] text-[11px] lg:text-xs text-white/50 hover:text-white transition-colors nav-link">Biografia</a>
+        <a href="/#discography" onclick="handleNavClick(event, 'discography')"
+          class="uppercase tracking-[0.2em] text-[11px] lg:text-xs text-white/50 hover:text-white transition-colors nav-link">Discografia</a>
+        <a href="/#services" onclick="handleNavClick(event, 'services')"
+          class="uppercase tracking-[0.2em] text-[11px] lg:text-xs text-white/50 hover:text-white transition-colors nav-link">Servizi</a>
+        <a href="/#contact" onclick="handleNavClick(event, 'contact')"
+          class="uppercase tracking-[0.2em] text-[11px] lg:text-xs text-white/50 hover:text-white transition-colors nav-link">Contatti</a>
+      </div>
+
+      <!-- Mobile Hamburger -->
+      <button class="md:hidden z-50 text-white p-2" onclick="toggleMobileMenu()">
+        <i data-lucide="menu" class="w-6 h-6"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <div id="mobile-menu"
+    class="fixed inset-0 z-40 bg-void/95 backdrop-blur-xl flex flex-col justify-center items-center hidden-menu">
+    <div class="flex flex-col gap-8 text-center">
+      <a href="/#home" onclick="handleNavClick(event, 'home')"
+        class="text-3xl font-serif text-white hover:opacity-70 transition-opacity">Home</a>
+      <a href="/#artist" onclick="handleNavClick(event, 'artist')"
+        class="text-3xl font-serif text-white hover:opacity-70 transition-opacity">Biografia</a>
+      <a href="/#discography" onclick="handleNavClick(event, 'discography')"
+        class="text-3xl font-serif text-white hover:opacity-70 transition-opacity">Discografia</a>
+      <a href="/#services" onclick="handleNavClick(event, 'services')"
+        class="text-3xl font-serif text-white hover:opacity-70 transition-opacity">Servizi</a>
+      <a href="/#contact" onclick="handleNavClick(event, 'contact')"
+        class="text-3xl font-serif text-white hover:opacity-70 transition-opacity">Contatti</a>
+    </div>
+    <button class="absolute bottom-10 text-white/50 p-4" onclick="toggleMobileMenu()">
+      <i data-lucide="x" class="w-8 h-8"></i>
+    </button>
+  </div>
+
+  <!-- Main Content -->
+  <main class="pt-20 min-h-screen relative w-full overflow-hidden">
+
+    <!-- HOME -->
+    <section id="home"
+      class="w-full min-h-[calc(100vh-80px)] flex flex-col items-center justify-center px-6 text-center pb-20 fade-section">
+      <h1 class="text-6xl md:text-8xl lg:text-9xl font-serif font-bold text-white mb-12 tracking-tight leading-none">
+        ADE MUSIC
+      </h1>
+
+      <div class="flex flex-col gap-6 items-center">
+        <a href="/#discography" onclick="handleNavClick(event, 'discography')"
+          class="group relative px-8 py-4 overflow-hidden rounded-full glass-panel hover:bg-white/10 transition-colors active:scale-95 duration-200 w-64 flex justify-center">
+          <span
+            class="relative z-10 text-xs font-semibold tracking-[0.2em] uppercase text-white flex items-center gap-2">
+            Discografia <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </span>
+        </a>
+
+        <a href="/#artist" onclick="handleNavClick(event, 'artist')"
+          class="group relative px-8 py-4 overflow-hidden rounded-full glass-panel hover:bg-white/10 transition-colors active:scale-95 duration-200 w-64 flex justify-center">
+          <span
+            class="relative z-10 text-xs font-semibold tracking-[0.2em] uppercase text-white flex items-center gap-2">
+            Biografia <i data-lucide="user" class="w-4 h-4"></i>
+          </span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ARTIST / BIO -->
+    <section id="artist" class="w-full min-h-screen px-6 py-10 hidden fade-section">
+      <div class="w-full max-w-3xl mx-auto pt-4 md:pt-10">
+        <h2 class="text-4xl md:text-6xl font-serif font-bold mb-12 text-center text-white">Biografia</h2>
+
+        <!-- Editorial Glass Card -->
+        <div class="glass-panel p-6 md:p-12 rounded-2xl relative overflow-hidden">
+          <!-- Subtle decorative element -->
+          <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-[50px] pointer-events-none"></div>
+
+          <div class="space-y-6 md:space-y-8 editorial-text text-base md:text-lg">
+            <p>
+              Ade è un artista e produttore indipendente che trasforma emozioni crude in suono contemporaneo. Tra
+              songwriting, produzione e sound design, costruisce mondi sonori intensi e personali, dove estetica e
+              identità contano quanto la musica stessa.
+            </p>
+
+            <p>
+              Attivo come singer, songwriter, beatmaker e mixing & mastering engineer, Ade cura ogni progetto dall’idea
+              iniziale al master finale, mantenendo una visione chiara e coerente. Il suo approccio fonde sensibilità
+              emotiva, ricerca sonora e tecnologia, muovendosi tra generi senza mai perdere riconoscibilità.
+            </p>
+
+            <p>
+              Sotto il nome Ade Music / 4ido Music, sviluppa un percorso artistico indipendente, moderno e senza
+              compromessi, utilizzando strumenti digitali e intelligenza artificiale come estensione creativa, non come
+              scorciatoia.
+            </p>
+
+            <!-- Highlight Quote -->
+            <div class="py-4 md:py-6 border-l-2 border-white/30 pl-6 my-8">
+              <p class="font-serif italic text-xl md:text-2xl text-white font-medium leading-tight">
+                "La sua musica non segue trend. Li osserva, li smonta e li reinterpreta. L’obiettivo è semplice: creare
+                tracce che restano, non che passano."
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DISCOGRAPHY -->
+    <section id="discography" class="w-full min-h-screen px-6 py-10 hidden fade-section">
+      <div class="w-full max-w-4xl mx-auto pt-4 md:pt-10">
+        <h2 class="text-4xl md:text-6xl font-serif font-bold mb-8 text-center text-white">paranoia - EP Preview</h2>
+
+        <!-- EP Cover -->
+        <div class="flex justify-center mb-10">
+          <div class="w-48 h-48 md:w-64 md:h-64 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+            <img src="/covers/cover1.jpg" alt="paranoia EP Cover" class="w-full h-full object-cover">
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+          <!-- Track 1: code switch -->
+          <div
+            class="glass-panel p-4 rounded-xl flex items-center gap-4 cursor-pointer hover:bg-white/5 transition-colors group"
+            onclick="playTrackFromGlobal(0)">
+            <div
+              class="h-16 w-16 bg-white/5 rounded flex-shrink-0 flex items-center justify-center border border-white/10 overflow-hidden">
+              <img src="/covers/cover1.jpg" onerror="this.style.display='none'" class="h-full w-full object-cover">
+              <i data-lucide="music-2" class="text-white/30 absolute z-[-1]"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-xl font-serif text-white truncate">code switch</h3>
+              <div class="flex items-center gap-2 mt-1">
+                <span style="color: #7000FF; border-color: #7000FF30;"
+                  class="text-[10px] uppercase tracking-widest text-white/50 border border-white/10 px-2 py-0.5 rounded">Electronic</span>
+              </div>
+            </div>
+            <button
+              class="h-12 w-12 rounded-full border border-white/20 flex items-center justify-center text-white active:scale-90 transition-transform">
+              <i data-lucide="play" class="w-5 h-5 fill-current ml-0.5"></i>
+            </button>
+          </div>
+
+          <!-- Track 2: no time to run -->
+          <div
+            class="glass-panel p-4 rounded-xl flex items-center gap-4 cursor-pointer hover:bg-white/5 transition-colors group"
+            onclick="playTrackFromGlobal(1)">
+            <div
+              class="h-16 w-16 bg-white/5 rounded flex-shrink-0 flex items-center justify-center border border-white/10 overflow-hidden">
+              <img src="/covers/cover2.jpg" onerror="this.style.display='none'" class="h-full w-full object-cover">
+              <i data-lucide="music-2" class="text-white/30 absolute z-[-1]"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-xl font-serif text-white truncate">no time to run</h3>
+              <div class="flex items-center gap-2 mt-1">
+                <span style="color: #FF8C00; border-color: #FF8C0030;"
+                  class="text-[10px] uppercase tracking-widest text-white/50 border border-white/10 px-2 py-0.5 rounded">Electronic</span>
+              </div>
+            </div>
+            <button
+              class="h-12 w-12 rounded-full border border-white/20 flex items-center justify-center text-white active:scale-90 transition-transform">
+              <i data-lucide="play" class="w-5 h-5 fill-current ml-0.5"></i>
+            </button>
+          </div>
+
+          <!-- Track 3: we're fucked -->
+          <div
+            class="glass-panel p-4 rounded-xl flex items-center gap-4 cursor-pointer hover:bg-white/5 transition-colors group"
+            onclick="playTrackFromGlobal(2)">
+            <div
+              class="h-16 w-16 bg-white/5 rounded flex-shrink-0 flex items-center justify-center border border-white/10 overflow-hidden">
+              <img src="/covers/cover3.jpg" onerror="this.style.display='none'" class="h-full w-full object-cover">
+              <i data-lucide="music-2" class="text-white/30 absolute z-[-1]"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-xl font-serif text-white truncate">we're fucked</h3>
+              <div class="flex items-center gap-2 mt-1">
+                <span style="color: #00F0FF; border-color: #00F0FF30;"
+                  class="text-[10px] uppercase tracking-widest text-white/50 border border-white/10 px-2 py-0.5 rounded">Electronic</span>
+              </div>
+            </div>
+            <button
+              class="h-12 w-12 rounded-full border border-white/20 flex items-center justify-center text-white active:scale-90 transition-transform">
+              <i data-lucide="play" class="w-5 h-5 fill-current ml-0.5"></i>
+            </button>
+          </div>
+
+          <!-- Track 4: it goes dark -->
+          <div
+            class="glass-panel p-4 rounded-xl flex items-center gap-4 cursor-pointer hover:bg-white/5 transition-colors group"
+            onclick="playTrackFromGlobal(3)">
+            <div
+              class="h-16 w-16 bg-white/5 rounded flex-shrink-0 flex items-center justify-center border border-white/10 overflow-hidden">
+              <img src="/covers/cover4.jpg" onerror="this.style.display='none'" class="h-full w-full object-cover">
+              <i data-lucide="music-2" class="text-white/30 absolute z-[-1]"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-xl font-serif text-white truncate">it goes dark</h3>
+              <div class="flex items-center gap-2 mt-1">
+                <span style="color: #FF00FF; border-color: #FF00FF30;"
+                  class="text-[10px] uppercase tracking-widest text-white/50 border border-white/10 px-2 py-0.5 rounded">Electronic</span>
+              </div>
+            </div>
+            <button
+              class="h-12 w-12 rounded-full border border-white/20 flex items-center justify-center text-white active:scale-90 transition-transform">
+              <i data-lucide="play" class="w-5 h-5 fill-current ml-0.5"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="w-full min-h-screen px-6 py-10 hidden fade-section">
+      <div class="w-full max-w-5xl mx-auto pt-4 md:pt-10">
+        <h2 class="text-4xl md:text-6xl font-serif font-bold mb-10 text-center text-white">L'Atelier Sonoro</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          <!-- Service 1 -->
+          <div class="glass-panel p-6 md:p-10 rounded-xl flex flex-col gap-4">
+            <i data-lucide="feather" class="w-8 h-8 text-white/70"></i>
+            <div>
+              <h3 class="text-2xl font-serif font-bold text-white mb-2">Songwriting</h3>
+              <p class="text-white/60 text-sm">Parole che pesano. Melodie che restano. Scrittura sartoriale.</p>
+            </div>
+          </div>
+
+          <!-- Service 2 -->
+          <div class="glass-panel p-6 md:p-10 rounded-xl flex flex-col gap-4">
+            <i data-lucide="waves" class="w-8 h-8 text-white/70"></i>
+            <div>
+              <h3 class="text-2xl font-serif font-bold text-white mb-2">Beatmaking</h3>
+              <p class="text-white/60 text-sm">Ritmi cuciti su misura per la tua visione. Sound design unico.</p>
+            </div>
+          </div>
+
+          <!-- Service 3 -->
+          <div class="glass-panel p-6 md:p-10 rounded-xl flex flex-col gap-4">
+            <i data-lucide="sliders" class="w-8 h-8 text-white/70"></i>
+            <div>
+              <h3 class="text-2xl font-serif font-bold text-white mb-2">Mixing</h3>
+              <p class="text-white/60 text-sm">Profondità, spazio e chiarezza tridimensionale.</p>
+            </div>
+          </div>
+
+          <!-- Service 4 -->
+          <div class="glass-panel p-6 md:p-10 rounded-xl flex flex-col gap-4">
+            <i data-lucide="disc" class="w-8 h-8 text-white/70"></i>
+            <div>
+              <h3 class="text-2xl font-serif font-bold text-white mb-2">Mastering</h3>
+              <p class="text-white/60 text-sm">Il sigillo finale per la competizione globale.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="w-full min-h-screen px-6 py-10 hidden fade-section flex-col items-center">
+      <div class="w-full max-w-xl mx-auto pt-4 md:pt-10">
+        <h2 class="text-4xl md:text-6xl font-serif font-bold mb-10 text-center text-white">Collaboriamo</h2>
+
+        <div class="glass-panel p-6 md:p-10 rounded-xl">
+          <form class="space-y-6" onsubmit="event.preventDefault(); alert('Messaggio inviato!');">
+            <div class="space-y-2">
+              <label class="text-[10px] uppercase tracking-widest text-white/50 block">Nome</label>
+              <input type="text"
+                class="w-full bg-transparent border-b border-white/20 py-3 text-base text-white focus:border-white focus:outline-none transition-colors rounded-none"
+                placeholder="Il tuo nome">
+            </div>
+            <div class="space-y-2">
+              <label class="text-[10px] uppercase tracking-widest text-white/50 block">Email</label>
+              <input type="email"
+                class="w-full bg-transparent border-b border-white/20 py-3 text-base text-white focus:border-white focus:outline-none transition-colors rounded-none"
+                placeholder="La tua email">
+            </div>
+            <div class="space-y-2">
+              <label class="text-[10px] uppercase tracking-widest text-white/50 block">Messaggio</label>
+              <textarea rows="4"
+                class="w-full bg-transparent border-b border-white/20 py-3 text-base text-white focus:border-white focus:outline-none transition-colors rounded-none"
+                placeholder="Descrivi il progetto..."></textarea>
+            </div>
+
+            <button type="submit"
+              class="w-full bg-white text-black font-semibold py-4 rounded hover:bg-gray-200 transition-colors tracking-wide mt-6 min-h-[48px]">
+              Invia Messaggio
+            </button>
+          </form>
+
+          <div class="mt-8 text-center pt-4">
+            <a href="mailto:music@adelajdo.com"
+              class="text-sm text-white/40 hover:text-white transition-colors block p-2">music@adelajdo.com</a>
+          </div>
+        </div>
+
+        <div class="flex gap-8 mt-12 pb-20 justify-center">
+          <a href="https://instagram.com/ade.hax" target="_blank"
+            class="p-2 text-white/40 hover:text-white transition-colors"><i data-lucide="instagram"
+              class="w-6 h-6"></i></a>
+          <a href="#" class="p-2 text-white/40 hover:text-white transition-colors"><i data-lucide="music"
+              class="w-6 h-6"></i></a>
+          <a href="#" class="p-2 text-white/40 hover:text-white transition-colors"><i data-lucide="youtube"
+              class="w-6 h-6"></i></a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="w-full py-6 text-center z-10 relative">
+    <p class="text-white/20 text-[10px] uppercase tracking-[0.2em]">© 2026 ADE MUSIC. All Rights Reserved.</p>
+  </footer>
+
+  <!-- REACT PLAYER ROOT -->
+  <!-- This is where the GlobalPlayer will be mounted by React -->
+  <div id="react-player-root"></div>
+
+  <!-- Logic -->
+  <script>
+    lucide.createIcons();
+
+    let currentSectionId = 'home';
+    let isNavigating = false;
+
+    // INTEROP: Function to trigger play from HTML
+    // We attach this to winow so React can see it or we dispatch Custom Event
+    window.playTrackFromGlobal = (index) => {
+      // Dispatch custom event that React Player will listen to
+      const event = new CustomEvent('play-track', { detail: { index } });
+      window.dispatchEvent(event);
+    };
+
+    window.addEventListener('load', () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash && document.getElementById(hash)) {
+        showSection(hash);
+      } else {
+        gsap.from("#home h1", { opacity: 0, y: 50, duration: 1.5, ease: "power4.out" });
+        gsap.from("#home p", { opacity: 0, y: 30, stagger: 0.2, duration: 1.5, ease: "power4.out", delay: 0.3 });
+        gsap.from("#home a.group", { opacity: 0, y: 20, duration: 1, ease: "power4.out", delay: 0.8 });
+      }
+    });
+
+    function handleNavClick(e, sectionId) {
+      e.preventDefault();
+      if (sectionId === currentSectionId || isNavigating) return;
+
+      history.pushState(null, '', '#' + sectionId);
+      transitionTo(sectionId);
+
+      const menu = document.getElementById('mobile-menu');
+      if (menu.classList.contains('visible-menu')) {
+        toggleMobileMenu();
+      }
+    }
+
+    function transitionTo(targetId) {
+      isNavigating = true;
+      const currentEl = document.getElementById(currentSectionId);
+      const targetEl = document.getElementById(targetId);
+
+      // Fade Out
+      gsap.to(currentEl, {
+        opacity: 0,
+        y: -20,
+        duration: 0.4,
+        ease: "power2.inOut",
+        onComplete: () => {
+          currentEl.style.display = 'none';
+          window.scrollTo(0, 0); // Essential for mobile transition feel
+
+          targetEl.style.display = 'flex';
+          if (targetId === 'home' || targetId === 'contact') {
+            targetEl.classList.add('flex-col', 'items-center', 'justify-center');
+          }
+
+          gsap.set(targetEl, { opacity: 0, y: 20 });
+
+          // Fade In
+          gsap.to(targetEl, {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            ease: "power2.out",
+            onComplete: () => {
+              currentSectionId = targetId;
+              isNavigating = false;
+              lucide.createIcons();
+            }
+          });
+        }
+      });
+    }
+
+    function showSection(id) {
+      const sections = ['home', 'artist', 'discography', 'services', 'contact'];
+      sections.forEach(s => {
+        const el = document.getElementById(s);
+        if (s === id) {
+          el.style.display = 'flex';
+          if (id === 'home' || id === 'contact') {
+            el.classList.add('flex-col', 'items-center', 'justify-center');
+          }
+          el.style.opacity = '1';
+          currentSectionId = id;
+        } else {
+          el.style.display = 'none';
+          el.style.opacity = '0';
+        }
+      });
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      if (menu.classList.contains('hidden-menu')) {
+        menu.classList.remove('hidden-menu');
+        menu.classList.add('visible-menu');
+      } else {
+        menu.classList.remove('visible-menu');
+        menu.classList.add('hidden-menu');
+      }
+    }
+
+    window.addEventListener('popstate', () => {
+      const hash = window.location.hash.replace('#', '') || 'home';
+      if (hash !== currentSectionId) transitionTo(hash);
+    });
+  </script>
+
+  <!-- React Entry Point for Player Overlay -->
+</body>
+
+</html>
