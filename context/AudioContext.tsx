@@ -30,12 +30,34 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
     const [hasPlayedOnce, setHasPlayedOnce] = useState(false);
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
+    const audioCtxRef = useRef<AudioContext | null>(null);
+    const gainNodeRef = useRef<GainNode | null>(null);
+    const sourceNodeRef = useRef<MediaElementAudioSourceNode | null>(null);
 
     // Initialize Audio Object & Listeners
     useEffect(() => {
         // Create new Audio instance
         const audio = new Audio();
+        audio.crossOrigin = "anonymous"; // Essential for Web Audio API if serving from CDN/different origin, good practice generally
         audioRef.current = audio;
+
+        // Web Audio API Initialization
+        const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+        const audioCtx = new AudioContextClass();
+        audioCtxRef.current = audioCtx;
+
+        const gainNode = audioCtx.createGain();
+        gainNode.gain.value = volume; // Set initial volume
+        gainNodeRef.current = gainNode;
+
+        // Connect nodes
+        // Note: Creating MediaElementSourceNode transfers control from the audio element to AudioContext
+        // It must only be done once per audio element.
+        const source = audioCtx.createMediaElementSource(audio);
+        sourceNodeRef.current = source;
+
+        source.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
 
         // Set initial source
         audio.src = TRACKS[0].src;
@@ -68,6 +90,11 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
             audio.removeEventListener('ended', handleEnded);
             audio.removeEventListener('loadedmetadata', () => { });
             audio.removeEventListener('error', handleError);
+
+            // Clean up Web Audio API
+            if (audioCtx.state !== 'closed') {
+                audioCtx.close();
+            }
         };
     }, []);
 
@@ -80,6 +107,11 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
         const safeSrc = encodeURI(track.src);
 
         if (!audio.src.includes(safeSrc)) {
+            // Check AudioContext state and resume if suspended (needed for autoplay policies)
+            if (audioCtxRef.current && audioCtxRef.current.state === 'suspended') {
+                audioCtxRef.current.resume();
+            }
+
             audio.src = safeSrc;
             audio.load();
             if (isPlaying) {
@@ -120,6 +152,11 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
         if (!audioRef.current) return;
 
         if (isPlaying) {
+            // Resume AudioContext if suspended (critical for first play)
+            if (audioCtxRef.current && audioCtxRef.current.state === 'suspended') {
+                audioCtxRef.current.resume();
+            }
+
             audioRef.current.play().catch(e => {
                 console.error("Play prevented / Audio not found:", e);
                 setIsPlaying(false);
@@ -174,7 +211,10 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
                 seek,
                 setVolume: (vol) => {
                     setVolume(vol);
-                    if (audioRef.current) audioRef.current.volume = vol;
+                    // Update GainNode instead of audio.volume
+                    if (gainNodeRef.current) {
+                        gainNodeRef.current.gain.value = vol;
+                    }
                 },
             }}
         >
