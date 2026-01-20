@@ -92,7 +92,6 @@ const GlobalPlayer = () => {
                     dragElastic={{ top: 0, bottom: 0.2 }}
                     onDragEnd={handleDragEnd}
                     className="fixed top-0 left-0 w-full h-[100dvh] z-[60] flex flex-col bg-[#050505] text-white overflow-hidden touch-none"
-                    style={{ maxHeight: '-webkit-fill-available' }}
                 >
                     {/* Dynamic Ambient Background */}
                     <div className="absolute inset-0 z-0 pointer-events-none">
@@ -104,7 +103,7 @@ const GlobalPlayer = () => {
                     </div>
 
                     {/* Header */}
-                    <div className="relative z-10 flex items-center justify-center pt-8 pb-6 px-6 h-[80px] shrink-0">
+                    <div className="relative z-10 flex items-center justify-center pt-8 pb-2 px-6 h-[60px] shrink-0">
                         <div className="w-10 h-1 bg-white/20 rounded-full absolute top-4 left-1/2 -translate-x-1/2" /> {/* Grab Handle */}
                         <button
                             onClick={() => setIsFullScreen(false)}
@@ -116,95 +115,101 @@ const GlobalPlayer = () => {
                     </div>
 
                     {/* Main Content */}
-                    <div className="relative z-10 flex-1 flex flex-col items-center justify-evenly px-8 pb-8 w-full max-w-md mx-auto">
+                    <div className="relative z-10 flex-1 flex flex-col items-center justify-between px-6 pb-8 w-full max-w-md mx-auto h-full overflow-y-auto hide-scrollbar">
 
-                        {/* Artwork */}
-                        <motion.div
-                            className="w-full aspect-square relative shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-2xl overflow-hidden max-h-[45vh]"
-                            initial={{ scale: 0.9, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={{ delay: 0.1 }}
-                        >
-                            <img
-                                src={currentTrack.cover}
-                                alt={currentTrack.title}
-                                className="w-full h-full object-cover"
-                            />
-                        </motion.div>
-
-                        {/* Track Info */}
-                        <div className="w-full h-[80px] flex items-center justify-between">
-                            <div className="flex-1 min-w-0 mr-4">
-                                <h2 className="text-2xl sm:text-3xl font-bold text-white mb-1 truncate leading-tight">
-                                    {currentTrack.title}
-                                </h2>
-                                <p className="text-lg text-white/60 truncate font-medium">
-                                    {currentTrack.artist}
-                                </p>
-                            </div>
+                        {/* Artwork Container - Flexible height */}
+                        <div className="flex-1 flex items-center justify-center w-full min-h-0 py-4">
+                            <motion.div
+                                className="w-auto h-auto max-w-full max-h-full aspect-square relative shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-2xl overflow-hidden"
+                                initial={{ scale: 0.9, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                transition={{ delay: 0.1 }}
+                            >
+                                <img
+                                    src={currentTrack.cover}
+                                    alt={currentTrack.title}
+                                    className="w-full h-full object-cover"
+                                />
+                            </motion.div>
                         </div>
 
-                        {/* Scrubber */}
-                        <div className="w-full h-[40px] flex flex-col justify-center group">
-                            <div
-                                className="relative h-2 w-full bg-white/10 rounded-full cursor-pointer touch-none"
-                                ref={fullScreenProgressBarRef}
-                                onPointerDown={(e) => handlePointerDown(e, fullScreenProgressBarRef)}
-                            >
-                                <div
-                                    className="absolute top-0 left-0 h-full bg-white rounded-full relative"
-                                    style={{ width: `${progress}%`, backgroundColor: currentTrack.color }}
-                                >
-                                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow transition-transform group-hover:scale-150" />
+                        {/* Controls Container */}
+                        <div className="w-full shrink-0 flex flex-col gap-4 sm:gap-6 mt-auto">
+
+                            {/* Track Info */}
+                            <div className="w-full flex items-end justify-between px-2">
+                                <div className="flex-1 min-w-0 mr-4">
+                                    <h2 className="text-2xl sm:text-3xl font-bold text-white mb-1 truncate leading-tight">
+                                        {currentTrack.title}
+                                    </h2>
+                                    <p className="text-lg text-white/60 truncate font-medium">
+                                        {currentTrack.artist}
+                                    </p>
                                 </div>
                             </div>
-                            <div className="flex justify-between mt-2 text-xs font-medium text-white/40">
-                                <span>{formatTime((progress / 100) * duration)}</span>
-                                <span>{formatTime(duration)}</span>
-                            </div>
-                        </div>
 
-                        {/* Controls */}
-                        <div className="w-full h-[100px] flex items-center justify-between px-4 sm:px-8">
-                            <button
-                                onClick={prevTrack}
-                                className="text-white/70 hover:text-white transition-colors active:scale-95"
-                            >
-                                <SkipBack size={36} fill="currentColor" />
-                            </button>
-
-                            <button
-                                onClick={togglePlay}
-                                className="w-20 h-20 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-xl"
-                            >
-                                {isPlaying ? (
-                                    <Pause size={32} fill="currentColor" />
-                                ) : (
-                                    <Play size={32} fill="currentColor" className="ml-1" />
-                                )}
-                            </button>
-
-                            <button
-                                onClick={nextTrack}
-                                className="text-white/70 hover:text-white transition-colors active:scale-95"
-                            >
-                                <SkipForward size={36} fill="currentColor" />
-                            </button>
-                        </div>
-
-                        {/* Interactive Volume */}
-                        <div className="w-full h-[40px] flex items-center gap-4 px-4 opacity-80">
-                            <Volume2 size={16} />
-                            <div
-                                className="flex-1 h-8 flex items-center cursor-pointer touch-none"
-                                ref={volumeBarRef}
-                                onPointerDown={(e) => handlePointerDown(e, volumeBarRef, true)}
-                            >
-                                <div className="w-full h-1 bg-white/20 rounded-full relative overflow-hidden">
+                            {/* Scrubber */}
+                            <div className="w-full group px-2">
+                                <div
+                                    className="relative h-2 w-full bg-white/10 rounded-full cursor-pointer touch-none"
+                                    ref={fullScreenProgressBarRef}
+                                    onPointerDown={(e) => handlePointerDown(e, fullScreenProgressBarRef)}
+                                >
                                     <div
-                                        className="h-full bg-white rounded-full absolute left-0 top-0"
-                                        style={{ width: `${volume * 100}%` }}
-                                    />
+                                        className="absolute top-0 left-0 h-full bg-white rounded-full relative"
+                                        style={{ width: `${progress}%`, backgroundColor: currentTrack.color }}
+                                    >
+                                        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow transition-transform group-hover:scale-150" />
+                                    </div>
+                                </div>
+                                <div className="flex justify-between mt-2 text-xs font-medium text-white/40">
+                                    <span>{formatTime((progress / 100) * duration)}</span>
+                                    <span>{formatTime(duration)}</span>
+                                </div>
+                            </div>
+
+                            {/* Controls */}
+                            <div className="w-full flex items-center justify-center gap-8 sm:gap-12">
+                                <button
+                                    onClick={prevTrack}
+                                    className="text-white/70 hover:text-white transition-colors active:scale-95"
+                                >
+                                    <SkipBack size={32} sm:size={40} fill="currentColor" />
+                                </button>
+
+                                <button
+                                    onClick={togglePlay}
+                                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-xl"
+                                >
+                                    {isPlaying ? (
+                                        <Pause size={28} sm:size={32} fill="currentColor" />
+                                    ) : (
+                                        <Play size={28} sm:size={32} fill="currentColor" className="ml-1" />
+                                    )}
+                                </button>
+
+                                <button
+                                    onClick={nextTrack}
+                                    className="text-white/70 hover:text-white transition-colors active:scale-95"
+                                >
+                                    <SkipForward size={32} sm:size={40} fill="currentColor" />
+                                </button>
+                            </div>
+
+                            {/* Interactive Volume */}
+                            <div className="w-full flex items-center gap-4 px-4 opacity-80 pt-2 pb-4">
+                                <Volume2 size={18} />
+                                <div
+                                    className="flex-1 h-6 flex items-center cursor-pointer touch-none"
+                                    ref={volumeBarRef}
+                                    onPointerDown={(e) => handlePointerDown(e, volumeBarRef, true)}
+                                >
+                                    <div className="w-full h-1 bg-white/20 rounded-full relative overflow-hidden">
+                                        <div
+                                            className="h-full bg-white rounded-full absolute left-0 top-0"
+                                            style={{ width: `${volume * 100}%` }}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
