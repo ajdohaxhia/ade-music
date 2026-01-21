@@ -26,21 +26,33 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
     const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
     const [progress, setProgress] = useState(0);
     const [duration, setDuration] = useState(0);
-    const [volume, setVolume] = useState(1);
+    const [volume, setVolumeState] = useState(1);
     const [hasPlayedOnce, setHasPlayedOnce] = useState(false);
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
+    const audioCtxRef = useRef<AudioContext | null>(null);
+    const gainNodeRef = useRef<GainNode | null>(null);
 
-    // Initialize Audio Object & Listeners (NO Web Audio API - just native HTML5 Audio)
+    // Initialize Audio Object & Web Audio API for volume control
     useEffect(() => {
-        // Create new Audio instance
         const audio = new Audio();
         audioRef.current = audio;
-
-        // Set initial volume
-        audio.volume = volume;
         audio.src = TRACKS[0].src;
 
+        // Web Audio API setup for volume control (works on iOS)
+        const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+        const audioCtx = new AudioContextClass();
+        audioCtxRef.current = audioCtx;
+
+        const gainNode = audioCtx.createGain();
+        gainNode.gain.value = volume;
+        gainNodeRef.current = gainNode;
+
+        const source = audioCtx.createMediaElementSource(audio);
+        source.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        // Event listeners for progress/duration
         const updateProgress = () => {
             if (audio.duration) {
                 setProgress((audio.currentTime / audio.duration) * 100);
@@ -50,7 +62,6 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
 
         const handleEnded = () => {
             setIsPlaying(false);
-            // Auto-advance to next track
             setCurrentTrackIndex((prev) => (prev + 1) % TRACKS.length);
             setIsPlaying(true);
         };
@@ -65,12 +76,26 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
         audio.addEventListener('loadedmetadata', () => setDuration(audio.duration));
         audio.addEventListener('error', handleError);
 
+        // Resume AudioContext on any user gesture (critical for iOS and background)
+        const resumeAudioContext = () => {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        };
+        document.addEventListener('touchstart', resumeAudioContext, { once: false });
+        document.addEventListener('click', resumeAudioContext, { once: false });
+
         return () => {
             audio.pause();
             audio.removeEventListener('timeupdate', updateProgress);
             audio.removeEventListener('ended', handleEnded);
             audio.removeEventListener('loadedmetadata', () => { });
             audio.removeEventListener('error', handleError);
+            document.removeEventListener('touchstart', resumeAudioContext);
+            document.removeEventListener('click', resumeAudioContext);
+            if (audioCtx.state !== 'closed') {
+                audioCtx.close();
+            }
         };
     }, []);
 
@@ -83,6 +108,11 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
         const safeSrc = encodeURI(track.src);
 
         if (!audio.src.includes(safeSrc)) {
+            // Resume AudioContext if suspended
+            if (audioCtxRef.current && audioCtxRef.current.state === 'suspended') {
+                audioCtxRef.current.resume();
+            }
+
             audio.src = safeSrc;
             audio.load();
             if (isPlaying) {
@@ -90,7 +120,7 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
             }
         }
 
-        // Update Media Session Metadata (OS / Lock Screen) - Critical for background playback
+        // Update Media Session Metadata (OS / Lock Screen)
         if ('mediaSession' in navigator) {
             navigator.mediaSession.metadata = new MediaMetadata({
                 title: track.title,
@@ -101,10 +131,8 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
                 ]
             });
 
-            // Set playback state - tells the browser this is actively playing media
             navigator.mediaSession.playbackState = isPlaying ? 'playing' : 'paused';
 
-            // Update Action Handlers
             navigator.mediaSession.setActionHandler('play', () => {
                 if (!hasPlayedOnce) setHasPlayedOnce(true);
                 setIsPlaying(true);
@@ -132,6 +160,11 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
         if (!audioRef.current) return;
 
         if (isPlaying) {
+            // Resume AudioContext if suspended (critical for iOS)
+            if (audioCtxRef.current && audioCtxRef.current.state === 'suspended') {
+                audioCtxRef.current.resume();
+            }
+
             const playPromise = audioRef.current.play();
             if (playPromise !== undefined) {
                 playPromise.catch(e => {
@@ -139,7 +172,6 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
                     setIsPlaying(false);
                 });
             }
-            // Update Media Session playback state
             if ('mediaSession' in navigator) {
                 navigator.mediaSession.playbackState = 'playing';
             }
@@ -179,6 +211,14 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
+    const setVolume = (vol: number) => {
+        setVolumeState(vol);
+        // Use GainNode for volume (works on iOS)
+        if (gainNodeRef.current) {
+            gainNodeRef.current.gain.value = vol;
+        }
+    };
+
     return (
         <AudioContext.Provider
             value={{
@@ -194,12 +234,7 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
                 nextTrack,
                 prevTrack,
                 seek,
-                setVolume: (vol) => {
-                    setVolume(vol);
-                    if (audioRef.current) {
-                        audioRef.current.volume = vol;
-                    }
-                },
+                setVolume,
             }}
         >
             {children}
