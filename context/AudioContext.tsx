@@ -167,15 +167,13 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
         if (!audioRef.current) return;
 
         if (isPlaying) {
-            // Resume AudioContext if suspended (critical for first play)
-            if (audioCtxRef.current && audioCtxRef.current.state === 'suspended') {
-                audioCtxRef.current.resume();
+            const playPromise = audioRef.current.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(e => {
+                    console.error("Play prevented / Audio not found:", e);
+                    setIsPlaying(false);
+                });
             }
-
-            audioRef.current.play().catch(e => {
-                console.error("Play prevented / Audio not found:", e);
-                setIsPlaying(false);
-            });
         } else {
             audioRef.current.pause();
         }
@@ -226,9 +224,8 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
                 seek,
                 setVolume: (vol) => {
                     setVolume(vol);
-                    // Update GainNode instead of audio.volume
-                    if (gainNodeRef.current) {
-                        gainNodeRef.current.gain.value = vol;
+                    if (audioRef.current) {
+                        audioRef.current.volume = vol;
                     }
                 },
             }}
