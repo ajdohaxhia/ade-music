@@ -36,9 +36,11 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
 
     // Initialize Audio Object & Listeners
     useEffect(() => {
-        // Create new Audio instance
+        // Create new Audio instance and append to body (helps with background playback priority)
         const audio = new Audio();
-        audio.crossOrigin = "anonymous"; // Essential for Web Audio API if serving from CDN/different origin, good practice generally
+        audio.crossOrigin = "anonymous";
+        audio.style.display = "none";
+        document.body.appendChild(audio);
         audioRef.current = audio;
 
         // Web Audio API Initialization
@@ -47,20 +49,23 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
         audioCtxRef.current = audioCtx;
 
         const gainNode = audioCtx.createGain();
-        gainNode.gain.value = volume; // Set initial volume
+        gainNode.gain.value = volume;
         gainNodeRef.current = gainNode;
 
-        // Connect nodes
-        // Note: Creating MediaElementSourceNode transfers control from the audio element to AudioContext
-        // It must only be done once per audio element.
         const source = audioCtx.createMediaElementSource(audio);
         sourceNodeRef.current = source;
-
         source.connect(gainNode);
         gainNode.connect(audioCtx.destination);
 
-        // Set initial source
         audio.src = TRACKS[0].src;
+
+        // Force resume AudioContext if it suspends while playing (common in updates/background)
+        const handleStateChange = () => {
+            if (audioCtx.state === 'suspended' && !audio.paused) {
+                audioCtx.resume();
+            }
+        };
+        audioCtx.addEventListener('statechange', handleStateChange);
 
         const updateProgress = () => {
             if (audio.duration) {
@@ -86,12 +91,14 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
 
         return () => {
             audio.pause();
+            if (document.body.contains(audio)) {
+                document.body.removeChild(audio);
+            }
             audio.removeEventListener('timeupdate', updateProgress);
             audio.removeEventListener('ended', handleEnded);
             audio.removeEventListener('loadedmetadata', () => { });
             audio.removeEventListener('error', handleError);
-
-            // Clean up Web Audio API
+            audioCtx.removeEventListener('statechange', handleStateChange);
             if (audioCtx.state !== 'closed') {
                 audioCtx.close();
             }
