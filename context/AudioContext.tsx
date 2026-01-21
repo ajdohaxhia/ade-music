@@ -39,7 +39,15 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
         // Create new Audio instance and append to body (helps with background playback priority)
         const audio = new Audio();
         audio.crossOrigin = "anonymous";
-        audio.style.display = "none";
+
+        // IMPORTANT: Do NOT use display: none, as browsers throttle hidden media.
+        // Use opacity: 0 and fixed position to keep it in the render tree but invisible.
+        audio.style.position = "fixed";
+        audio.style.left = "-9999px";
+        audio.style.top = "0";
+        audio.style.opacity = "0";
+        audio.style.pointerEvents = "none";
+
         document.body.appendChild(audio);
         audioRef.current = audio;
 
