@@ -30,50 +30,16 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
     const [hasPlayedOnce, setHasPlayedOnce] = useState(false);
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
-    const audioCtxRef = useRef<AudioContext | null>(null);
-    const gainNodeRef = useRef<GainNode | null>(null);
-    const sourceNodeRef = useRef<MediaElementAudioSourceNode | null>(null);
 
-    // Initialize Audio Object & Listeners
+    // Initialize Audio Object & Listeners (NO Web Audio API - just native HTML5 Audio)
     useEffect(() => {
-        // Create new Audio instance and append to body (helps with background playback priority)
-        // Create new Audio instance and append to body (helps with background playback priority)
+        // Create new Audio instance
         const audio = new Audio();
-
-        // IMPORTANT: Do NOT use display: none, as browsers throttle hidden media.
-        // Use opacity: 0 and fixed position to keep it in the render tree but invisible.
-        audio.style.position = "fixed";
-        audio.style.left = "-9999px";
-        audio.style.top = "0";
-        audio.style.opacity = "0";
-        audio.style.pointerEvents = "none";
-
-        document.body.appendChild(audio);
         audioRef.current = audio;
 
-        // Web Audio API Initialization
-        const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
-        const audioCtx = new AudioContextClass();
-        audioCtxRef.current = audioCtx;
-
-        const gainNode = audioCtx.createGain();
-        gainNode.gain.value = volume;
-        gainNodeRef.current = gainNode;
-
-        const source = audioCtx.createMediaElementSource(audio);
-        sourceNodeRef.current = source;
-        source.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-
+        // Set initial volume
+        audio.volume = volume;
         audio.src = TRACKS[0].src;
-
-        // Force resume AudioContext if it suspends while playing (common in updates/background)
-        const handleStateChange = () => {
-            if (audioCtx.state === 'suspended' && !audio.paused) {
-                audioCtx.resume();
-            }
-        };
-        audioCtx.addEventListener('statechange', handleStateChange);
 
         const updateProgress = () => {
             if (audio.duration) {
@@ -84,7 +50,9 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
 
         const handleEnded = () => {
             setIsPlaying(false);
-            nextTrack();
+            // Auto-advance to next track
+            setCurrentTrackIndex((prev) => (prev + 1) % TRACKS.length);
+            setIsPlaying(true);
         };
 
         const handleError = (e: Event) => {
@@ -99,17 +67,10 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
 
         return () => {
             audio.pause();
-            if (document.body.contains(audio)) {
-                document.body.removeChild(audio);
-            }
             audio.removeEventListener('timeupdate', updateProgress);
             audio.removeEventListener('ended', handleEnded);
             audio.removeEventListener('loadedmetadata', () => { });
             audio.removeEventListener('error', handleError);
-            audioCtx.removeEventListener('statechange', handleStateChange);
-            if (audioCtx.state !== 'closed') {
-                audioCtx.close();
-            }
         };
     }, []);
 
@@ -122,11 +83,6 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
         const safeSrc = encodeURI(track.src);
 
         if (!audio.src.includes(safeSrc)) {
-            // Check AudioContext state and resume if suspended (needed for autoplay policies)
-            if (audioCtxRef.current && audioCtxRef.current.state === 'suspended') {
-                audioCtxRef.current.resume();
-            }
-
             audio.src = safeSrc;
             audio.load();
             if (isPlaying) {
@@ -134,7 +90,7 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
             }
         }
 
-        // Update Media Session Metadata (OS / Lock Screen)
+        // Update Media Session Metadata (OS / Lock Screen) - Critical for background playback
         if ('mediaSession' in navigator) {
             navigator.mediaSession.metadata = new MediaMetadata({
                 title: track.title,
@@ -145,14 +101,23 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
                 ]
             });
 
+            // Set playback state - tells the browser this is actively playing media
+            navigator.mediaSession.playbackState = isPlaying ? 'playing' : 'paused';
+
             // Update Action Handlers
             navigator.mediaSession.setActionHandler('play', () => {
                 if (!hasPlayedOnce) setHasPlayedOnce(true);
                 setIsPlaying(true);
             });
             navigator.mediaSession.setActionHandler('pause', () => setIsPlaying(false));
-            navigator.mediaSession.setActionHandler('previoustrack', prevTrack);
-            navigator.mediaSession.setActionHandler('nexttrack', nextTrack);
+            navigator.mediaSession.setActionHandler('previoustrack', () => {
+                setCurrentTrackIndex((prev) => (prev - 1 + TRACKS.length) % TRACKS.length);
+                setIsPlaying(true);
+            });
+            navigator.mediaSession.setActionHandler('nexttrack', () => {
+                setCurrentTrackIndex((prev) => (prev + 1) % TRACKS.length);
+                setIsPlaying(true);
+            });
             navigator.mediaSession.setActionHandler('seekto', (details) => {
                 if (details.seekTime && audioRef.current) {
                     audioRef.current.currentTime = details.seekTime;
@@ -160,7 +125,7 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
                 }
             });
         }
-    }, [currentTrackIndex]);
+    }, [currentTrackIndex, isPlaying, hasPlayedOnce]);
 
     // Effect: Handle Play/Pause Toggle
     useEffect(() => {
@@ -174,8 +139,15 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
                     setIsPlaying(false);
                 });
             }
+            // Update Media Session playback state
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.playbackState = 'playing';
+            }
         } else {
             audioRef.current.pause();
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.playbackState = 'paused';
+            }
         }
     }, [isPlaying]);
 
