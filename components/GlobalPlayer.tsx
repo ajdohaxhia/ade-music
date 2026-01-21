@@ -1,16 +1,15 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence, useDragControls, PanInfo } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { useAudio } from '@/context/AudioContext';
-import { Play, Pause, SkipForward, SkipBack, ChevronDown, X, Volume2, Music, ListMusic } from 'lucide-react';
+import { Play, Pause, SkipForward, SkipBack, ChevronDown } from 'lucide-react';
 
 const GlobalPlayer = () => {
-    const { currentTrack, isPlaying, togglePlay, nextTrack, prevTrack, progress, isVisible, duration, seek, volume, setVolume } = useAudio();
+    const { currentTrack, isPlaying, togglePlay, nextTrack, prevTrack, progress, isVisible, duration, seek } = useAudio();
     const [isFullScreen, setIsFullScreen] = useState(false);
     const progressBarRef = React.useRef<HTMLDivElement>(null);
     const fullScreenProgressBarRef = React.useRef<HTMLDivElement>(null);
-    const volumeBarRef = React.useRef<HTMLDivElement>(null);
 
     const [isDragging, setIsDragging] = useState(false);
 
@@ -27,12 +26,8 @@ const GlobalPlayer = () => {
         seek(newTime);
     };
 
-    const handleVolumeChange = (percentage: number) => {
-        const newVolume = Math.max(0, Math.min(1, percentage));
-        setVolume(newVolume);
-    };
 
-    const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>, ref: React.RefObject<HTMLDivElement>, isVolume = false) => {
+    const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>, ref: React.RefObject<HTMLDivElement>) => {
         e.stopPropagation(); // Prevent drag of parent
         setIsDragging(true);
         if (!ref.current) return;
@@ -41,20 +36,12 @@ const GlobalPlayer = () => {
         const width = rect.width;
         const percentage = Math.max(0, Math.min(1, (clientX - rect.left) / width));
 
-        if (isVolume) {
-            handleVolumeChange(percentage);
-        } else {
-            handleSeek(percentage);
-        }
+        handleSeek(percentage);
 
         // Add global listeners for drag
         const handlePointerMove = (moveEvent: PointerEvent) => {
             const newPercentage = Math.max(0, Math.min(1, (moveEvent.clientX - rect.left) / width));
-            if (isVolume) {
-                handleVolumeChange(newPercentage);
-            } else {
-                handleSeek(newPercentage);
-            }
+            handleSeek(newPercentage);
         };
 
         const handlePointerUp = () => {
@@ -196,22 +183,6 @@ const GlobalPlayer = () => {
                                 </button>
                             </div>
 
-                            {/* Interactive Volume */}
-                            <div className="w-full flex items-center gap-4 px-4 opacity-80 pt-2 pb-4">
-                                <Volume2 size={18} />
-                                <div
-                                    className="flex-1 h-6 flex items-center cursor-pointer touch-none"
-                                    ref={volumeBarRef}
-                                    onPointerDown={(e) => handlePointerDown(e, volumeBarRef, true)}
-                                >
-                                    <div className="w-full h-1 bg-white/20 rounded-full relative overflow-hidden">
-                                        <div
-                                            className="h-full bg-white rounded-full absolute left-0 top-0"
-                                            style={{ width: `${volume * 100}%` }}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                     </div>
