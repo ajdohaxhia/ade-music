@@ -28,7 +28,7 @@ export const TRACKS: Track[] = [
         cover: '/covers/cover2.jpg',
         duration: '3:12',
         genre: 'Electronic',
-        color: '#8B4513', // Saddle Brown
+        color: '#4a4a4a', // Match EP color
     },
     {
         id: '3',
@@ -38,7 +38,7 @@ export const TRACKS: Track[] = [
         cover: '/covers/cover3.jpg',
         duration: '4:20',
         genre: 'Electronic',
-        color: '#2F4F4F', // Dark Slate Grey
+        color: '#4a4a4a', // Match EP color
     },
     {
         id: '4',
@@ -48,7 +48,7 @@ export const TRACKS: Track[] = [
         cover: '/covers/cover4.jpg',
         duration: '3:30',
         genre: 'Electronic',
-        color: '#800020', // Burgundy
+        color: '#4a4a4a', // Match EP color
     },
     {
         id: '5',
