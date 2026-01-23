@@ -93,7 +93,8 @@ const Discography = () => {
 
                                     <div className="flex items-center justify-center gap-3">
                                         <span
-                                            className="text-[10px] uppercase tracking-wider px-2 py-1 rounded-full border border-white/10 bg-white/5 text-white/60"
+                                            className="text-[10px] uppercase tracking-wider px-2 py-1 rounded-full border bg-white/5"
+                                            style={{ borderColor: track.color, color: track.color }}
                                         >
                                             {track.genre}
                                         </span>
