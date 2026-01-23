@@ -78,7 +78,7 @@ const GlobalPlayer = () => {
                     dragConstraints={{ top: 0, bottom: 0 }}
                     dragElastic={{ top: 0, bottom: 0.2 }}
                     onDragEnd={handleDragEnd}
-                    className="fixed top-0 left-0 w-full h-[100dvh] z-[60] flex flex-col bg-[#050505] text-white overflow-hidden touch-none"
+                    className="fixed inset-0 z-[60] flex flex-col bg-[#050505] text-white overflow-hidden touch-none"
                 >
                     {/* Dynamic Ambient Background */}
                     <div className="absolute inset-0 z-0 pointer-events-none">

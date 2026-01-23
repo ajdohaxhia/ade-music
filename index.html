@@ -461,7 +461,21 @@
         <h2 class="text-4xl md:text-6xl font-serif font-bold mb-10 text-center text-white">Collaboriamo</h2>
 
         <div class="glass-panel p-6 md:p-10 rounded-xl">
-          <form class="space-y-6" onsubmit="event.preventDefault(); alert('Messaggio inviato!');">
+          <form class="space-y-6" onsubmit="event.preventDefault(); 
+            const name = this.querySelector('input[type=text]').value;
+            const email = this.querySelector('input[type=email]').value;
+            const message = this.querySelector('textarea').value;
+            
+            if(!name || !email || !message) {
+              alert('Compila tutti i campi per favore.');
+              return;
+            }
+
+            const subject = encodeURIComponent(`Contatto dal Sito Web: ${name}`);
+            const body = encodeURIComponent(`Nome: ${name}\nEmail: ${email}\n\nMessaggio:\n${message}`);
+            
+            window.location.href = `mailto:info@adelajdo.com?subject=${subject}&body=${body}`;
+          ">
             <div class="space-y-2">
               <label class="text-[10px] uppercase tracking-widest text-white/50 block">Nome</label>
               <input type="text"
@@ -488,8 +502,8 @@
           </form>
 
           <div class="mt-8 text-center pt-4">
-            <a href="mailto:music@adelajdo.com"
-              class="text-sm text-white/40 hover:text-white transition-colors block p-2">music@adelajdo.com</a>
+            <a href="mailto:info@adelajdo.com"
+              class="text-sm text-white/40 hover:text-white transition-colors block p-2">info@adelajdo.com</a>
           </div>
         </div>
 
