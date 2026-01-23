@@ -68,7 +68,7 @@ export const TRACKS: Track[] = [
         src: '/music/anxiety/anxiety.mp3',
         cover: '/covers/anxiety.jpg',
         duration: '3:20', // Placeholder
-        genre: 'Electronic',
+        genre: 'Rap/Hip-Hop',
         color: '#2e2e2e', // Dark Grey/Black for Anxiety
     },
     {
@@ -78,7 +78,7 @@ export const TRACKS: Track[] = [
         src: '/music/anxiety/anxiety_extended.mp3',
         cover: '/covers/anxiety.jpg',
         duration: '5:45', // Placeholder
-        genre: 'Electronic',
+        genre: 'Rap/Hip-Hop',
         color: '#2e2e2e',
     },
     {
@@ -88,7 +88,7 @@ export const TRACKS: Track[] = [
         src: '/music/anxiety/anxiety_instrumental.mp3',
         cover: '/covers/anxiety.jpg',
         duration: '3:20', // Placeholder
-        genre: 'Electronic',
+        genre: 'Rap/Hip-Hop',
         color: '#2e2e2e',
     },
     // Singles
@@ -99,7 +99,7 @@ export const TRACKS: Track[] = [
         src: '/music/betrayed/betrayed.mp3',
         cover: '/covers/betrayed.jpg',
         duration: '3:40', // Placeholder
-        genre: 'Electronic',
+        genre: 'Rap/Hip-Hop',
         color: '#8B0000', // Dark Red
     },
     {
@@ -109,7 +109,7 @@ export const TRACKS: Track[] = [
         src: '/music/betrayed/betrayed_extended.mp3',
         cover: '/covers/betrayed.jpg',
         duration: '6:10', // Placeholder
-        genre: 'Electronic',
+        genre: 'Rap/Hip-Hop',
         color: '#8B0000',
     },
     {
@@ -119,7 +119,7 @@ export const TRACKS: Track[] = [
         src: '/music/no_more_tears/NO MORE TEARS FINAL FINAL.mp3',
         cover: '/covers/no_more_tears.jpeg',
         duration: '3:15', // Placeholder
-        genre: 'Electronic',
+        genre: 'Pop',
         color: '#4682B4', // Steel Blue
     },
     {
@@ -129,7 +129,7 @@ export const TRACKS: Track[] = [
         src: '/music/no_more_tears/NO MORE TEARS INSTRUMENTAL FINAL.mp3',
         cover: '/covers/no_more_tears.jpeg',
         duration: '3:15', // Placeholder
-        genre: 'Electronic',
+        genre: 'Pop',
         color: '#4682B4',
     },
 ];
