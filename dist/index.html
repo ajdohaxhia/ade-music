@@ -17,8 +17,8 @@
   <meta property="og:title" content="ADE MUSIC">
   <meta property="og:description" content="Ade Music — Singer, Songwriter, Beatmaker, Mixing & Mastering Engineer.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://ade-music.netlify.app">
-  <meta property="og:image" content="https://ade-music.netlify.app/og-image-v3.png">
+  <meta property="og:url" content="https://adelajdo.com">
+  <meta property="og:image" content="https://adelajdo.com/og-image-v4.png">
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -28,7 +28,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="ADE MUSIC">
   <meta name="twitter:description" content="Ade Music — Singer, Songwriter, Beatmaker, Mixing & Mastering Engineer.">
-  <meta name="twitter:image" content="https://ade-music.netlify.app/og-image-v3.png">
+  <meta name="twitter:image" content="https://adelajdo.com/og-image-v4.png">
 
   <!-- Favicon: 444 Logo -->
   <link rel="icon" href="/favicon-v2.png" type="image/png">
@@ -167,8 +167,17 @@
       /* Relaxed leading */
       color: rgba(255, 255, 255, 0.85);
     }
+
+    /* Protected Image Utility */
+    .protected-image {
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-user-drag: none;
+    }
   </style>
-  <script type="module" crossorigin src="/assets/index-DTDmt8tr.js"></script>
+  <script type="module" crossorigin src="/assets/index-B9XyYe9b.js"></script>
 </head>
 
 <body class="selection:bg-white/20 selection:text-white">
@@ -236,19 +245,17 @@
       </h1>
 
       <div class="flex flex-col gap-6 items-center">
+        <!-- Bio Photo -->
+        <div class="w-48 h-48 md:w-64 md:h-64 rounded-2xl overflow-hidden glass-panel mb-8 order-first md:order-none">
+          <img src="/bio.png" alt="Ade Bio" class="w-full h-full object-cover protected-image" draggable="false"
+            oncontextmenu="return false;">
+        </div>
+
         <a href="/#discography" onclick="handleNavClick(event, 'discography')"
           class="group relative px-8 py-4 overflow-hidden rounded-full glass-panel hover:bg-white/10 transition-colors active:scale-95 duration-200 w-64 flex justify-center">
           <span
             class="relative z-10 text-xs font-semibold tracking-[0.2em] uppercase text-white flex items-center gap-2">
             Discografia <i data-lucide="arrow-right" class="w-4 h-4"></i>
-          </span>
-        </a>
-
-        <a href="/#artist" onclick="handleNavClick(event, 'artist')"
-          class="group relative px-8 py-4 overflow-hidden rounded-full glass-panel hover:bg-white/10 transition-colors active:scale-95 duration-200 w-64 flex justify-center">
-          <span
-            class="relative z-10 text-xs font-semibold tracking-[0.2em] uppercase text-white flex items-center gap-2">
-            Biografia <i data-lucide="user" class="w-4 h-4"></i>
           </span>
         </a>
       </div>
@@ -263,6 +270,16 @@
         <div class="glass-panel p-6 md:p-12 rounded-2xl relative overflow-hidden">
           <!-- Subtle decorative element -->
           <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-[50px] pointer-events-none"></div>
+
+          <div class="flex flex-col md:flex-row gap-8 items-center mb-8">
+            <div class="w-48 h-48 md:w-56 md:h-56 shrink-0 rounded-2xl overflow-hidden glass-panel">
+              <img src="/bio.png" alt="Ade Bio" class="w-full h-full object-cover protected-image" draggable="false"
+                oncontextmenu="return false;">
+            </div>
+            <p class="font-serif italic text-xl md:text-2xl text-white font-medium leading-tight opacity-90">
+              "La sua musica non segue trend. Li osserva, li smonta e li reinterpreta."
+            </p>
+          </div>
 
           <div class="space-y-6 md:space-y-8 editorial-text text-base md:text-lg">
             <p>
@@ -283,13 +300,7 @@
               scorciatoia.
             </p>
 
-            <!-- Highlight Quote -->
-            <div class="py-4 md:py-6 border-l-2 border-white/30 pl-6 my-8">
-              <p class="font-serif italic text-xl md:text-2xl text-white font-medium leading-tight">
-                "La sua musica non segue trend. Li osserva, li smonta e li reinterpreta. L’obiettivo è semplice: creare
-                tracce che restano, non che passano."
-              </p>
-            </div>
+
           </div>
         </div>
       </div>
@@ -298,12 +309,211 @@
     <!-- DISCOGRAPHY -->
     <section id="discography" class="w-full min-h-screen px-6 py-10 hidden fade-section">
       <div class="w-full max-w-4xl mx-auto pt-4 md:pt-10">
+
+        <!-- ANXIETY RELEASE -->
+        <h2 class="text-4xl md:text-6xl font-serif font-bold mb-8 text-center text-white">anxiety</h2>
+
+        <!-- Anxiety Cover -->
+        <div class="flex justify-center mb-10">
+          <div class="w-48 h-48 md:w-64 md:h-64 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+            <img src="/covers/anxiety.jpg" alt="Anxiety Cover" class="w-full h-full object-cover protected-image"
+              draggable="false" oncontextmenu="return false;">
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-4 mb-20">
+          <!-- Anxiety Original -->
+          <div
+            class="glass-panel p-4 rounded-xl flex items-center gap-4 cursor-pointer hover:bg-white/5 transition-colors group"
+            onclick="playTrackFromGlobal(5)">
+            <div
+              class="h-16 w-16 bg-white/5 rounded flex-shrink-0 flex items-center justify-center border border-white/10 overflow-hidden">
+              <img src="/covers/anxiety.jpg" onerror="this.style.display='none'" class="h-full w-full object-cover">
+              <i data-lucide="music-2" class="text-white/30 absolute z-[-1]"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-xl font-serif text-white truncate">anxiety</h3>
+              <div class="flex items-center gap-2 mt-1">
+                <span style="color: #ffffff; border-color: #ffffff30;"
+                  class="text-[10px] uppercase tracking-widest text-white/50 border border-white/10 px-2 py-0.5 rounded">Rap/Hip-Hop</span>
+              </div>
+            </div>
+            <button
+              class="h-12 w-12 rounded-full border border-white/20 flex items-center justify-center text-white active:scale-90 transition-transform">
+              <i data-lucide="play" class="w-5 h-5 fill-current ml-0.5"></i>
+            </button>
+          </div>
+
+          <!-- Anxiety Extended -->
+          <div
+            class="glass-panel p-4 rounded-xl flex items-center gap-4 cursor-pointer hover:bg-white/5 transition-colors group"
+            onclick="playTrackFromGlobal(6)">
+            <div
+              class="h-16 w-16 bg-white/5 rounded flex-shrink-0 flex items-center justify-center border border-white/10 overflow-hidden">
+              <img src="/covers/anxiety.jpg" onerror="this.style.display='none'" class="h-full w-full object-cover">
+              <i data-lucide="music-2" class="text-white/30 absolute z-[-1]"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-xl font-serif text-white truncate">anxiety (extended)</h3>
+              <div class="flex items-center gap-2 mt-1">
+                <span style="color: #ffffff; border-color: #ffffff30;"
+                  class="text-[10px] uppercase tracking-widest text-white/50 border border-white/10 px-2 py-0.5 rounded">Rap/Hip-Hop</span>
+              </div>
+            </div>
+            <button
+              class="h-12 w-12 rounded-full border border-white/20 flex items-center justify-center text-white active:scale-90 transition-transform">
+              <i data-lucide="play" class="w-5 h-5 fill-current ml-0.5"></i>
+            </button>
+          </div>
+
+          <!-- Anxiety Instrumental -->
+          <div
+            class="glass-panel p-4 rounded-xl flex items-center gap-4 cursor-pointer hover:bg-white/5 transition-colors group"
+            onclick="playTrackFromGlobal(7)">
+            <div
+              class="h-16 w-16 bg-white/5 rounded flex-shrink-0 flex items-center justify-center border border-white/10 overflow-hidden">
+              <img src="/covers/anxiety.jpg" onerror="this.style.display='none'" class="h-full w-full object-cover">
+              <i data-lucide="music-2" class="text-white/30 absolute z-[-1]"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-xl font-serif text-white truncate">anxiety (instrumental)</h3>
+              <div class="flex items-center gap-2 mt-1">
+                <span style="color: #ffffff; border-color: #ffffff30;"
+                  class="text-[10px] uppercase tracking-widest text-white/50 border border-white/10 px-2 py-0.5 rounded">Rap/Hip-Hop</span>
+              </div>
+            </div>
+            <button
+              class="h-12 w-12 rounded-full border border-white/20 flex items-center justify-center text-white active:scale-90 transition-transform">
+              <i data-lucide="play" class="w-5 h-5 fill-current ml-0.5"></i>
+            </button>
+          </div>
+        </div>
+
+
+        <!-- BETRAYED RELEASE -->
+        <h2 class="text-4xl md:text-6xl font-serif font-bold mb-8 text-center text-white mt-32">betrayed</h2>
+
+        <!-- Betrayed Cover -->
+        <div class="flex justify-center mb-10">
+          <div class="w-48 h-48 md:w-64 md:h-64 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+            <img src="/covers/betrayed.jpg" alt="Betrayed Cover" class="w-full h-full object-cover protected-image"
+              draggable="false" oncontextmenu="return false;">
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-4 mb-20">
+          <!-- Betrayed -->
+          <div
+            class="glass-panel p-4 rounded-xl flex items-center gap-4 cursor-pointer hover:bg-white/5 transition-colors group"
+            onclick="playTrackFromGlobal(8)">
+            <div
+              class="h-16 w-16 bg-white/5 rounded flex-shrink-0 flex items-center justify-center border border-white/10 overflow-hidden">
+              <img src="/covers/betrayed.jpg" onerror="this.style.display='none'" class="h-full w-full object-cover">
+              <i data-lucide="music-2" class="text-white/30 absolute z-[-1]"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-xl font-serif text-white truncate">betrayed</h3>
+              <div class="flex items-center gap-2 mt-1">
+                <span style="color: #8B0000; border-color: #8B000030;"
+                  class="text-[10px] uppercase tracking-widest text-white/50 border border-white/10 px-2 py-0.5 rounded">Rap/Hip-Hop</span>
+              </div>
+            </div>
+            <button
+              class="h-12 w-12 rounded-full border border-white/20 flex items-center justify-center text-white active:scale-90 transition-transform">
+              <i data-lucide="play" class="w-5 h-5 fill-current ml-0.5"></i>
+            </button>
+          </div>
+
+          <!-- Betrayed Extended -->
+          <div
+            class="glass-panel p-4 rounded-xl flex items-center gap-4 cursor-pointer hover:bg-white/5 transition-colors group"
+            onclick="playTrackFromGlobal(9)">
+            <div
+              class="h-16 w-16 bg-white/5 rounded flex-shrink-0 flex items-center justify-center border border-white/10 overflow-hidden">
+              <img src="/covers/betrayed.jpg" onerror="this.style.display='none'" class="h-full w-full object-cover">
+              <i data-lucide="music-2" class="text-white/30 absolute z-[-1]"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-xl font-serif text-white truncate">betrayed (extended)</h3>
+              <div class="flex items-center gap-2 mt-1">
+                <span style="color: #8B0000; border-color: #8B000030;"
+                  class="text-[10px] uppercase tracking-widest text-white/50 border border-white/10 px-2 py-0.5 rounded">Rap/Hip-Hop</span>
+              </div>
+            </div>
+            <button
+              class="h-12 w-12 rounded-full border border-white/20 flex items-center justify-center text-white active:scale-90 transition-transform">
+              <i data-lucide="play" class="w-5 h-5 fill-current ml-0.5"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- NO MORE TEARS RELEASE -->
+        <h2 class="text-4xl md:text-6xl font-serif font-bold mb-8 text-center text-white mt-10">no more tears</h2>
+
+        <!-- No More Tears Cover -->
+        <div class="flex justify-center mb-10">
+          <div class="w-48 h-48 md:w-64 md:h-64 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+            <img src="/covers/no_more_tears.jpeg" alt="No More Tears Cover"
+              class="w-full h-full object-cover protected-image" draggable="false" oncontextmenu="return false;">
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-4 mb-20">
+          <!-- No More Tears -->
+          <div
+            class="glass-panel p-4 rounded-xl flex items-center gap-4 cursor-pointer hover:bg-white/5 transition-colors group"
+            onclick="playTrackFromGlobal(10)">
+            <div
+              class="h-16 w-16 bg-white/5 rounded flex-shrink-0 flex items-center justify-center border border-white/10 overflow-hidden">
+              <img src="/covers/no_more_tears.jpeg" onerror="this.style.display='none'"
+                class="h-full w-full object-cover">
+              <i data-lucide="music-2" class="text-white/30 absolute z-[-1]"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-xl font-serif text-white truncate">no more tears</h3>
+              <div class="flex items-center gap-2 mt-1">
+                <span style="color: #4682B4; border-color: #4682B430;"
+                  class="text-[10px] uppercase tracking-widest text-white/50 border border-white/10 px-2 py-0.5 rounded">Pop</span>
+              </div>
+            </div>
+            <button
+              class="h-12 w-12 rounded-full border border-white/20 flex items-center justify-center text-white active:scale-90 transition-transform">
+              <i data-lucide="play" class="w-5 h-5 fill-current ml-0.5"></i>
+            </button>
+          </div>
+
+          <!-- No More Tears Instrumental -->
+          <div
+            class="glass-panel p-4 rounded-xl flex items-center gap-4 cursor-pointer hover:bg-white/5 transition-colors group"
+            onclick="playTrackFromGlobal(11)">
+            <div
+              class="h-16 w-16 bg-white/5 rounded flex-shrink-0 flex items-center justify-center border border-white/10 overflow-hidden">
+              <img src="/covers/no_more_tears.jpeg" onerror="this.style.display='none'"
+                class="h-full w-full object-cover">
+              <i data-lucide="music-2" class="text-white/30 absolute z-[-1]"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-xl font-serif text-white truncate">no more tears (instrumental)</h3>
+              <div class="flex items-center gap-2 mt-1">
+                <span style="color: #4682B4; border-color: #4682B430;"
+                  class="text-[10px] uppercase tracking-widest text-white/50 border border-white/10 px-2 py-0.5 rounded">Pop</span>
+              </div>
+            </div>
+            <button
+              class="h-12 w-12 rounded-full border border-white/20 flex items-center justify-center text-white active:scale-90 transition-transform">
+              <i data-lucide="play" class="w-5 h-5 fill-current ml-0.5"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- PARANOIA EP -->
         <h2 class="text-4xl md:text-6xl font-serif font-bold mb-8 text-center text-white">paranoia - EP Preview</h2>
 
         <!-- EP Cover -->
         <div class="flex justify-center mb-10">
           <div class="w-48 h-48 md:w-64 md:h-64 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10">
-            <img src="/covers/cover1.jpg" alt="paranoia EP Cover" class="w-full h-full object-cover">
+            <img src="/covers/cover1.jpg" alt="paranoia EP Cover" class="w-full h-full object-cover protected-image"
+              draggable="false" oncontextmenu="return false;">
           </div>
         </div>
 
@@ -395,6 +605,28 @@
               <i data-lucide="play" class="w-5 h-5 fill-current ml-0.5"></i>
             </button>
           </div>
+
+          <!-- Track 5: black goat -->
+          <div
+            class="glass-panel p-4 rounded-xl flex items-center gap-4 cursor-pointer hover:bg-white/5 transition-colors group"
+            onclick="playTrackFromGlobal(4)">
+            <div
+              class="h-16 w-16 bg-white/5 rounded flex-shrink-0 flex items-center justify-center border border-white/10 overflow-hidden">
+              <img src="/covers/cover1.jpg" onerror="this.style.display='none'" class="h-full w-full object-cover">
+              <i data-lucide="music-2" class="text-white/30 absolute z-[-1]"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-xl font-serif text-white truncate">black goat</h3>
+              <div class="flex items-center gap-2 mt-1">
+                <span style="color: #7000FF; border-color: #7000FF30;"
+                  class="text-[10px] uppercase tracking-widest text-white/50 border border-white/10 px-2 py-0.5 rounded">Electronic</span>
+              </div>
+            </div>
+            <button
+              class="h-12 w-12 rounded-full border border-white/20 flex items-center justify-center text-white active:scale-90 transition-transform">
+              <i data-lucide="play" class="w-5 h-5 fill-current ml-0.5"></i>
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -450,7 +682,21 @@
         <h2 class="text-4xl md:text-6xl font-serif font-bold mb-10 text-center text-white">Collaboriamo</h2>
 
         <div class="glass-panel p-6 md:p-10 rounded-xl">
-          <form class="space-y-6" onsubmit="event.preventDefault(); alert('Messaggio inviato!');">
+          <form class="space-y-6" onsubmit="event.preventDefault(); 
+            const name = this.querySelector('input[type=text]').value;
+            const email = this.querySelector('input[type=email]').value;
+            const message = this.querySelector('textarea').value;
+            
+            if(!name || !email || !message) {
+              alert('Compila tutti i campi per favore.');
+              return;
+            }
+
+            const subject = encodeURIComponent(`Contatto dal Sito Web: ${name}`);
+            const body = encodeURIComponent(`Nome: ${name}\nEmail: ${email}\n\nMessaggio:\n${message}`);
+            
+            window.location.href = `mailto:info@adelajdo.com?subject=${subject}&body=${body}`;
+          ">
             <div class="space-y-2">
               <label class="text-[10px] uppercase tracking-widest text-white/50 block">Nome</label>
               <input type="text"
@@ -477,8 +723,8 @@
           </form>
 
           <div class="mt-8 text-center pt-4">
-            <a href="mailto:music@adelajdo.com"
-              class="text-sm text-white/40 hover:text-white transition-colors block p-2">music@adelajdo.com</a>
+            <a href="mailto:info@adelajdo.com"
+              class="text-sm text-white/40 hover:text-white transition-colors block p-2">info@adelajdo.com</a>
           </div>
         </div>
 

@@ -1,0 +1,22 @@
+/*
+  Access-Control-Allow-Origin: *
+
+/og-image*.png
+  Cache-Control: public, max-age=3600
+  Content-Type: image/png
+
+/favicon*.png
+  Cache-Control: public, max-age=3600
+  Content-Type: image/png
+
+/*.png
+  Cache-Control: public, max-age=86400
+  Content-Type: image/png
+
+/*.jpg
+  Cache-Control: public, max-age=86400
+  Content-Type: image/jpeg
+
+/*.mp3
+  Cache-Control: public, max-age=604800
+  Content-Type: audio/mpeg
