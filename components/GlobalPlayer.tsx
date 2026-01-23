@@ -115,7 +115,9 @@ const GlobalPlayer = () => {
                                 <img
                                     src={currentTrack.cover}
                                     alt={currentTrack.title}
-                                    className="w-full h-full object-cover"
+                                    className="w-full h-full object-cover pointer-events-none select-none"
+                                    draggable={false}
+                                    onContextMenu={(e) => e.preventDefault()}
                                 />
                             </motion.div>
                         </div>
