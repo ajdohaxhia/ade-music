@@ -19,7 +19,7 @@ const Discography = () => {
             <div className="flex justify-center mb-12">
                 <div className="w-48 h-48 md:w-64 md:h-64 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10">
                     <img
-                        src="/covers/cover1.jpg"
+                        src="/covers/cover1.webp"
                         alt="paranoia EP Cover"
                         className="w-full h-full object-cover"
                     />
