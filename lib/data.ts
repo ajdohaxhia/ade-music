@@ -15,7 +15,7 @@ export const TRACKS: Track[] = [
         title: 'code switch',
         artist: 'Ade Music',
         src: '/music/track1.mp3',
-        cover: '/covers/cover1.jpg',
+        cover: '/covers/cover1.webp',
         duration: '2:45',
         genre: 'Electronic',
         color: '#4a4a4a', // Dark Grey
@@ -25,7 +25,7 @@ export const TRACKS: Track[] = [
         title: 'no time to run',
         artist: 'Ade Music',
         src: '/music/track2.mp3',
-        cover: '/covers/cover2.jpg',
+        cover: '/covers/cover2.webp',
         duration: '3:12',
         genre: 'Electronic',
         color: '#4a4a4a', // Match EP color
@@ -35,7 +35,7 @@ export const TRACKS: Track[] = [
         title: "we're fucked",
         artist: 'Ade Music',
         src: '/music/track3.mp3',
-        cover: '/covers/cover3.jpg',
+        cover: '/covers/cover3.webp',
         duration: '4:20',
         genre: 'Electronic',
         color: '#4a4a4a', // Match EP color
@@ -45,7 +45,7 @@ export const TRACKS: Track[] = [
         title: 'it goes dark',
         artist: 'Ade Music',
         src: '/music/track4.mp3',
-        cover: '/covers/cover4.jpg',
+        cover: '/covers/cover4.webp',
         duration: '3:30',
         genre: 'Electronic',
         color: '#4a4a4a', // Match EP color
@@ -55,7 +55,7 @@ export const TRACKS: Track[] = [
         title: 'black goat',
         artist: 'Ade Music',
         src: '/music/track5.mp3',
-        cover: '/covers/cover1.jpg',
+        cover: '/covers/cover1.webp',
         duration: '3:00', // Placeholder
         genre: 'Electronic',
         color: '#4a4a4a', // Match EP color
@@ -66,7 +66,7 @@ export const TRACKS: Track[] = [
         title: 'anxiety',
         artist: 'Ade Music',
         src: '/music/anxiety/anxiety.mp3',
-        cover: '/covers/anxiety.jpg',
+        cover: '/covers/anxiety.webp',
         duration: '3:20', // Placeholder
         genre: 'Rap/Hip-Hop',
         color: '#2e2e2e', // Dark Grey/Black for Anxiety
@@ -76,7 +76,7 @@ export const TRACKS: Track[] = [
         title: 'anxiety (extended)',
         artist: 'Ade Music',
         src: '/music/anxiety/anxiety_extended.mp3',
-        cover: '/covers/anxiety.jpg',
+        cover: '/covers/anxiety.webp',
         duration: '5:45', // Placeholder
         genre: 'Rap/Hip-Hop',
         color: '#2e2e2e',
@@ -86,7 +86,7 @@ export const TRACKS: Track[] = [
         title: 'anxiety (instrumental)',
         artist: 'Ade Music',
         src: '/music/anxiety/anxiety_instrumental.mp3',
-        cover: '/covers/anxiety.jpg',
+        cover: '/covers/anxiety.webp',
         duration: '3:20', // Placeholder
         genre: 'Rap/Hip-Hop',
         color: '#2e2e2e',
@@ -97,7 +97,7 @@ export const TRACKS: Track[] = [
         title: 'betrayed',
         artist: 'Ade Music',
         src: '/music/betrayed/betrayed.mp3',
-        cover: '/covers/betrayed.jpg',
+        cover: '/covers/betrayed.webp',
         duration: '3:40', // Placeholder
         genre: 'Rap/Hip-Hop',
         color: '#8B0000', // Dark Red
@@ -107,7 +107,7 @@ export const TRACKS: Track[] = [
         title: 'betrayed (extended)',
         artist: 'Ade Music',
         src: '/music/betrayed/betrayed_extended.mp3',
-        cover: '/covers/betrayed.jpg',
+        cover: '/covers/betrayed.webp',
         duration: '6:10', // Placeholder
         genre: 'Rap/Hip-Hop',
         color: '#8B0000',
@@ -117,7 +117,7 @@ export const TRACKS: Track[] = [
         title: 'no more tears',
         artist: 'Ade Music',
         src: '/music/no_more_tears/NO MORE TEARS FINAL FINAL.mp3',
-        cover: '/covers/no_more_tears.jpeg',
+        cover: '/covers/no_more_tears.webp',
         duration: '3:15', // Placeholder
         genre: 'Pop',
         color: '#4682B4', // Steel Blue
@@ -127,7 +127,7 @@ export const TRACKS: Track[] = [
         title: 'no more tears (instrumental)',
         artist: 'Ade Music',
         src: '/music/no_more_tears/NO MORE TEARS INSTRUMENTAL FINAL.mp3',
-        cover: '/covers/no_more_tears.jpeg',
+        cover: '/covers/no_more_tears.webp',
         duration: '3:15', // Placeholder
         genre: 'Pop',
         color: '#4682B4',
