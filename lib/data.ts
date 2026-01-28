@@ -60,6 +60,16 @@ export const TRACKS: Track[] = [
         genre: 'Electronic',
         color: '#4a4a4a', // Match EP color
     },
+    {
+        id: '13',
+        title: 'dead',
+        artist: 'Ade Music',
+        src: '/music/track6.mp3',
+        cover: '/covers/cover1.webp',
+        duration: '3:00', // Placeholder
+        genre: 'Electronic',
+        color: '#4a4a4a', // Match EP color
+    },
     // Anxiety Release
     {
         id: '6',
