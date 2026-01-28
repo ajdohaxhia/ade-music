@@ -790,7 +790,8 @@
       window.dispatchEvent(event);
     };
 
-    window.addEventListener('load', () => {
+    // Run animation immediately when DOM is ready (faster than waiting for full load)
+    document.addEventListener('DOMContentLoaded', () => {
       const hash = window.location.hash.replace('#', '');
       if (hash && document.getElementById(hash)) {
         showSection(hash);
